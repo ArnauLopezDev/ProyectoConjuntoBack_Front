@@ -3,9 +3,9 @@
 $bd_config = array(
     'host' => 'db',
 //$host = '160.153.133.189';,
-    'db' => 'daw2',
+    'db' => 'db_zoologico',
     'user' => 'root',
-    'pass' => 'Gimbernat1'
+    'pass' => 'root'
 );
 
 $blog_config = array(

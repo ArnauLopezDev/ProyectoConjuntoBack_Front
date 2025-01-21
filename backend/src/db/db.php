@@ -22,5 +22,5 @@ class Conectar {
 }
 
 // Example usage:
-// $conexion = Conectar::conexion($bd_config); 
+// $conexion = Conectar::conexion($bd_config);
 ?>
