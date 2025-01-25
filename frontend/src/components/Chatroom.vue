@@ -1,0 +1,198 @@
+<!-- <template>
+    <div class="chat-room">
+        <h2>Chat Room</h2>
+        <div class="messages" ref="messages">
+            <div v-for="(message, index) in messages" :key="index">
+                <strong>{{ message.user }}:</strong> {{ message.text }}
+            </div>
+        </div>
+        <input v-model="message" type="text" placeholder="Escribe un mensaje..." @keyup.enter="sendMessage" />
+    </div>
+</template>
+
+<script>
+import socket, { sendMessage } from "@/socket";
+
+export default {
+    data() {
+        return {
+            message: "",
+            messages: [],
+            user: localStorage.getItem("chatUser") || "Usuario_" + Math.floor(Math.random() * 1000),
+        };
+    },
+    mounted() {
+        // Guardar el usuario en localStorage
+        localStorage.setItem("chatUser", this.user);
+
+        // Escuchar mensajes del servidor
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.messages.push(data);
+        };
+
+        // Manejar errores del WebSocket
+        socket.onerror = (error) => {
+            console.error("Error en el WebSocket:", error);
+            this.messages.push({ user: "Sistema", text: "Error en la conexión con el servidor." });
+        };
+    },
+    methods: {
+        sendMessage() {
+            if (this.message.trim() !== "") {
+                const data = {
+                    user: this.user,
+                    text: this.message,
+                };
+
+                // Enviar mensaje al servidor
+                socket.send(JSON.stringify(data));
+                this.message = "";
+            }
+        },
+        scrollToBottom() {
+            const messagesDiv = this.$refs.messages;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        },
+    },
+    watch: {
+        messages() {
+            this.scrollToBottom();
+        },
+    },
+};
+</script>
+
+<style>
+.chat-room {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 500px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+}
+
+.messages {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+</style> -->
+
+<template>
+    <div class="chat-room">
+        <h2>Chat Room</h2>
+        <div class="messages" ref="messages">
+            <div v-for="(message, index) in messages" :key="index">
+                <strong>{{ message.user }}:</strong> {{ message.text }}
+            </div>
+        </div>
+        <input v-model="message" type="text" placeholder="Escribe un mensaje..." @keyup.enter="sendMessage" />
+    </div>
+</template>
+
+<script>
+import socket from "@/socket"; // Ensure this file exports the WebSocket connection
+
+export default {
+    data() {
+        return {
+            message: "",
+            messages: [],
+            user: localStorage.getItem("chatUser") || "Usuario_" + Math.floor(Math.random() * 1000),
+        };
+    },
+    mounted() {
+        // Guardar el usuario en localStorage
+        localStorage.setItem("chatUser", this.user);
+
+        // Escuchar mensajes del servidor
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.messages.push(data);
+        };
+
+        // Manejar errores del WebSocket
+        socket.onerror = (error) => {
+            console.error("Error en el WebSocket:", error);
+            this.messages.push({ user: "Sistema", text: "Error en la conexión con el servidor." });
+        };
+    },
+    methods: {
+        sendMessage() {
+            if (this.message.trim() !== "") {
+                const data = {
+                    user: this.user,
+                    text: this.message,
+                    room: "general"  // Ensure the room is specified
+                };
+
+                // Enviar mensaje al servidor
+                socket.send(JSON.stringify(data));
+                this.message = "";
+            }
+        },
+        scrollToBottom() {
+            const messagesDiv = this.$refs.messages;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        },
+    },
+    watch: {
+        messages() {
+            this.scrollToBottom();
+        },
+    },
+};
+</script>
+
+<style>
+.chat-room {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 500px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+}
+
+.messages {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+</style>

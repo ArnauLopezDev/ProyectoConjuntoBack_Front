@@ -1,27 +1,26 @@
-#Aplicacion PHP
-services:
-  php-app:
-    image: proyecto-php:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./src:/var/www/html
-    depends_on:
-      - db
-#Servicio conexion a la base de datos
-  db:
-    image: mysql:8.0
-    container_name: mysqldb
-    environment:
-      - MYSQL_ROOT_PASSWORD= 
-      - MYSQL_DATABASE=
-      - MYSQL_USER=
-      - MYSQL_PASSWORD=
-    ports:
-      - "3307:3306"
-    volumes:
-      - db-data:/var/lib/mysql
-      - ./my-init-scripts:/docker-entrypoint-initdb.d/:ro
+version: "3.8"
 
-volumes:
-  db-data:
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+
+networks:
+  app-network:
+    driver: bridge
