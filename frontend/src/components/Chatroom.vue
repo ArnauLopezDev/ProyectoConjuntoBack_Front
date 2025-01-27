@@ -1,6 +1,6 @@
 <template>
     <div class="chat-room">
-        <h2>Chat</h2>
+        <h2>{{ roomName }}</h2>
         <div class="messages" ref="messages">
             <div v-for="(message, index) in messages" :key="index" class="message">
                 <strong>{{ message.user }}:</strong> {{ message.text }}
@@ -19,11 +19,28 @@ export default {
             message: "",
             messages: [],
             user: localStorage.getItem("chatUser") || "Usuario_" + Math.floor(Math.random() * 1000),
+            roomName: "",
         };
     },
     mounted() {
         // Guardar el usuario en localStorage
         localStorage.setItem("chatUser", this.user);
+
+        // Get the room name from the URL
+        const currentRoute = this.$route.name;
+        switch (currentRoute) {
+            case "animales":
+                this.roomName = "Animales";
+                break;
+            case "zoologicos":
+                this.roomName = "Zoologicos";
+                break;
+            case "eventos":
+                this.roomName = "Eventos";
+                break;
+            default:
+                this.roomName = "General";
+        }
 
         // Escuchar mensajes del servidor
         socket.onmessage = (event) => {
@@ -43,7 +60,7 @@ export default {
                 const data = {
                     user: this.user,
                     text: this.message,
-                    room: "generalRoom"
+                    room: this.roomName,
                 };
 
                 // Enviar mensaje al servidor
