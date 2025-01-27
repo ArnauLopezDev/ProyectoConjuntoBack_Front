@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ChatRoom from "@/components/chatroom.vue";
+import ChatRoom from "@/components/Chatroom.vue";
 
 export default {
     components: {

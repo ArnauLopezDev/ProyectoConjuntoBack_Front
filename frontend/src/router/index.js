@@ -22,6 +22,41 @@ const router = createRouter({
       name: "ChatRoom",
       component: () => import("../views/ChatRoomView.vue"),
     },
+    {
+      path: "/animales",
+      name: "animales",
+      component: () => import("../views/animalesPageView.vue"),
+    },
+    {
+      path: "/animales/:id",
+      name: "animal",
+      component: () => import("../views/animalesPageView.vue"),
+    },
+    {
+      path: "/eventos",
+      name: "eventos",
+      component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/eventos/:id",
+      name: "evento",
+      component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/zoologicos",
+      name: "zoologicos",
+      component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/zoologicos/:id",
+      name: "zoologico",
+      component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: () => import("../views/AboutView.vue"),
+    }
   ],
 })
 

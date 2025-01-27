@@ -2,14 +2,18 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const http = require('http');
 const WebSocket = require('ws');
 const config = require('./config/config.js');
 
+
+const router = express.Router();
 // Controladores y rutas
 const animalsRoutes = require('./routes/animalsRoutes.js');
 
 const app = express();
+app.use(cors());
 const port = config.port || 3000;
 
 // Crear el servidor HTTP
@@ -24,14 +28,15 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Rutas de la API REST
-app.use('/api/animals', animalsRoutes); // Usamos el controlador de animales
+app.use('/api/animals', animalsRoutes);
 
 // Manejar conexiones WebSocket
 wss.on('connection', (ws) => {
     console.log('Cliente conectado');
     ws.on('message', (message) => {
         console.log('Mensaje recibido:', message);
-        ws.send(JSON.stringify({ user: 'Server', text: 'Mensaje recibido' }));
+        console.log(message.toLocaleString());
+        ws.send(JSON.stringify({ user: 'Server', text: 'Mensaje recibido ' + message }));
     });
 
     ws.on('close', () => {

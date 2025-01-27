@@ -15,6 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'; /* PartiallyEnd: #3632/scr
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/chat">Chat</RouterLink>
+        <RouterLink to="/animales">Animales</RouterLink>
       </nav>
     </div>
   </header>

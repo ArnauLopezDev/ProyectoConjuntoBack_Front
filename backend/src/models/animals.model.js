@@ -1,5 +1,3 @@
-// animalModel.js
-
 // Simulando una base de datos simple en memoria
 let animals = [];
 
@@ -14,6 +12,7 @@ exports.createAnimal = (name, species) => {
 };
 
 exports.getAnimalById = (id) => {
+    console.log("baguette");
     return animals.find(animal => animal.id === id);
 };
 
@@ -35,3 +34,78 @@ exports.deleteAnimal = (id) => {
     }
     return false;
 };
+
+// const mysql = require("mysql2/promise");
+// const config = require("../config/config");
+
+// // Create a connection pool
+// const pool = mysql.createPool({
+//     host: config.MYSQL_HOST,
+//     user: config.MYSQL_USER,
+//     password: config.MYSQL_PASSWORD,
+//     database: config.MYSQL_DATABASE,
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0,
+// });
+
+// // Fetch all animals
+// exports.getAllAnimals = async () => {
+//     try {
+//         const [rows] = await pool.query("SELECT * FROM Animales");
+//         return rows;
+//     } catch (error) {
+//         console.error("Error fetching animals:", error);
+//         throw error;
+//     }
+// };
+
+// // Create a new animal
+// exports.createAnimal = async (name, species, habitat, dieta, estado_salud, id_zoologico) => {
+//     try {
+//         const [result] = await pool.query(
+//             "INSERT INTO Animales (nombre, especie, habitat, dieta, estado_salud, id_zoologico) VALUES (?, ?, ?, ?, ?, ?)",
+//             [name, species, habitat, dieta, estado_salud, id_zoologico]
+//         );
+//         return { id: result.insertId, name, species, habitat, dieta, estado_salud, id_zoologico };
+//     } catch (error) {
+//         console.error("Error creating animal:", error);
+//         throw error;
+//     }
+// };
+
+// // Fetch an animal by ID
+// exports.getAnimalById = async (id) => {
+//     try {
+//         const [rows] = await pool.query("SELECT * FROM Animales WHERE id_animal = ?", [id]);
+//         return rows[0] || null;
+//     } catch (error) {
+//         console.error("Error fetching animal by ID:", error);
+//         throw error;
+//     }
+// };
+
+// // Update an animal
+// exports.updateAnimal = async (id, name, species, habitat, dieta, estado_salud) => {
+//     try {
+//         const [result] = await pool.query(
+//             "UPDATE Animales SET nombre = ?, especie = ?, habitat = ?, dieta = ?, estado_salud = ? WHERE id_animal = ?",
+//             [name, species, habitat, dieta, estado_salud, id]
+//         );
+//         return result.affectedRows > 0;
+//     } catch (error) {
+//         console.error("Error updating animal:", error);
+//         throw error;
+//     }
+// };
+
+// // Delete an animal
+// exports.deleteAnimal = async (id) => {
+//     try {
+//         const [result] = await pool.query("DELETE FROM Animales WHERE id_animal = ?", [id]);
+//         return result.affectedRows > 0;
+//     } catch (error) {
+//         console.error("Error deleting animal:", error);
+//         throw error;
+//     }
+// };

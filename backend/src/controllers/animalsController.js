@@ -1,37 +1,65 @@
-// animalsController.js
 const animalModel = require('../models/animals.model.js');
 
-exports.getAnimals = (req, res) => {
-    const animals = animalModel.getAllAnimals();
-    res.status(200).json(animals);
-};
-
-exports.createAnimal = (req, res) => {
-    const { name, species } = req.body;
-    const newAnimal = animalModel.createAnimal(name, species);
-    res.status(201).json(newAnimal);
-};
-
-exports.getAnimalById = (req, res) => {
-    const animal = animalModel.getAnimalById(parseInt(req.params.id));
-    if (!animal) {
-        return res.status(404).json({ message: 'Animal no encontrado' });
+exports.getAnimals = async (req, res) => {
+    try {
+        const animals = await animalModel.getAllAnimals();
+        res.status(200).json(animals);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los animales', error });
     }
-    res.status(200).json(animal);
 };
 
-exports.updateAnimal = (req, res) => {
-    const animal = animalModel.updateAnimal(parseInt(req.params.id), req.body.name, req.body.species);
-    if (!animal) {
-        return res.status(404).json({ message: 'Animal no encontrado' });
+exports.createAnimal = async (req, res) => {
+    const { nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
+    try {
+        const newAnimal = await animalModel.createAnimal(nombre, especie, habitat, dieta, estado_salud, id_zoologico);
+        res.status(201).json(newAnimal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al crear el animal', error });
     }
-    res.status(200).json(animal);
 };
 
-exports.deleteAnimal = (req, res) => {
-    const success = animalModel.deleteAnimal(parseInt(req.params.id));
-    if (!success) {
-        return res.status(404).json({ message: 'Animal no encontrado' });
+exports.getAnimalById = async (req, res) => {
+    try {
+        const animal = await animalModel.getAnimalById(parseInt(req.params.id));
+        if (!animal) {
+            return res.status(404).json({ message: 'Animal no encontrado' });
+        }
+        res.status(200).json(animal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener el animal', error });
     }
-    res.status(204).send();
+};
+
+exports.updateAnimal = async (req, res) => {
+    const { nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
+    try {
+        const success = await animalModel.update(
+            parseInt(req.params.id),
+            nombre,
+            especie,
+            habitat,
+            dieta,
+            estado_salud,
+            id_zoologico
+        );
+        if (!success) {
+            return res.status(404).json({ message: 'Animal no encontrado' });
+        }
+        res.status(200).json({ message: 'Animal actualizado correctamente' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar el animal', error });
+    }
+};
+
+exports.deleteAnimal = async (req, res) => {
+    try {
+        const success = await animalModel.delete(parseInt(req.params.id));
+        if (!success) {
+            return res.status(404).json({ message: 'Animal no encontrado' });
+        }
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar el animal', error });
+    }
 };
