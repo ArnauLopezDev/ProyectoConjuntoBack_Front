@@ -1,8 +1,8 @@
-
+require('dotenv').config();
 
 const config = {
     PORT: process.env.PORT || 3000,
-    REDIS_HOST: process.env.REDIS_HOST || "127.0.0.1",
+    REDIS_HOST: process.env.REDIS_HOST || "redis",
     REDIS_PORT: process.env.REDIS_PORT || 6379,
     AUTH_SECRET_KEY: process.env.AUTH_SECRET_KEY || "secret_key",
     AUTH_KEY_EXPIRATION: process.env.AUTH_KEY_EXPIRATION || "1h",
