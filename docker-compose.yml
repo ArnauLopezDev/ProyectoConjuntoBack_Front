@@ -1,26 +1,66 @@
-version: "3.8"
-
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    networks:
-      - app-network
-
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "3000:3000"
-    networks:
-      - app-network
     environment:
-      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - AUTH_SECRET_KEY=secret_key
+      - AUTH_KEY_EXPIRATION=1h
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=zoologico
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_USER=root
+      - MONGO_PASSWORD=password
+      - MONGO_DATABASE=zoologico
+    depends_on:
+      - db
+      - redis
+      - mongo
+    volumes:
+      #- ./backend:/src  # Re-enable this after build is complete
+      - /src/node_modules  # Persist node_modules
 
-networks:
-  app-network:
-    driver: bridge
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: zoologico
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
+  mongo_data:

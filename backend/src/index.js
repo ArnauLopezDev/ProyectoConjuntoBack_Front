@@ -1,46 +1,71 @@
 // index.js
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
 const WebSocket = require('ws');
+const redisClient = require('./services/redis.service.js');
 const config = require('./config/config.js');
-
-
-const router = express.Router();
-// Controladores y rutas
-const animalsRoutes = require('./routes/animalsRoutes.js');
+// Rutas
+const animalsRoutes = require('./routes/animals.Routes.js');
 
 const app = express();
-app.use(cors());
 const port = config.port || 3000;
 
-// Crear el servidor HTTP
-const server = http.createServer(app);
-
-// Crear el servidor WebSocket
-const wss = new WebSocket.Server({ server });
-
-// Middleware y rutas de tu API
+// Middleware de Express
+app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Rutas de la API REST
 app.use('/api/animals', animalsRoutes);
 
+// Crear el servidor HTTP y WebSocket
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
 // Manejar conexiones WebSocket
 wss.on('connection', (ws) => {
     console.log('Cliente conectado');
+
     ws.on('message', (message) => {
-        console.log('Mensaje recibido:', message);
-        console.log(message.toLocaleString());
-        ws.send(JSON.stringify({ user: 'Server', text: 'Mensaje recibido ' + message }));
+        try {
+            const { room, user, text } = JSON.parse(message);
+
+            if (!room || !user || !text) {
+                console.error('Mensaje inválido recibido');
+                return;
+            }
+
+            // Asignar sala y usuario al WebSocket
+            ws.room = room;
+            ws.user = user;
+
+            // Agregar usuario a la sala en Redis
+            redisClient.sadd(`room:${room}:users`, user);
+
+            // Guardar mensaje en Redis
+            const timestamp = new Date();
+            redisClient.rpush(`chat:${room}`, JSON.stringify({ user, text, timestamp }));
+
+            // Enviar mensaje a todos los clientes de la misma sala
+            wss.clients.forEach((client) => {
+                if (client.readyState === WebSocket.OPEN && client.room === room) {
+                    client.send(JSON.stringify({ user, text, timestamp }));
+                }
+            });
+        } catch (err) {
+            console.error('Error al procesar el mensaje:', err.message);
+        }
     });
 
     ws.on('close', () => {
         console.log('Cliente desconectado');
+
+        // Eliminar usuario de la sala en Redis
+        if (ws.room && ws.user) {
+            redisClient.srem(`room:${ws.room}:users`, ws.user);
+        }
     });
 });
 
@@ -48,26 +73,3 @@ wss.on('connection', (ws) => {
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-
-
-// Asignar cliente a una sala (si el cliente envía su sala al conectarse)
-// ws.on('message', (message) => {
-//     try {
-//         const { room, user, text } = JSON.parse(message);
-
-//         if (room) {
-//             ws.room = room; // Asigna la sala al cliente
-//             console.log(`Usuario ${user} asignado a la sala ${room}`);
-//         }
-
-//         // Enviar mensaje solo a clientes de la misma sala
-//         wss.clients.forEach((client) => {
-//             if (client.readyState === WebSocket.OPEN && client.room === ws.room) {
-//                 client.send(JSON.stringify({ user, text }));
-//             }
-//         });
-//     } catch (err) {
-//         console.error('Error al procesar el mensaje:', err.message);
-//     }
-// });

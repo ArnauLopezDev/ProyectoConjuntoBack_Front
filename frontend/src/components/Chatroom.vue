@@ -28,19 +28,20 @@ export default {
 
         // Get the room name from the URL
         const currentRoute = this.$route.name;
-        switch (currentRoute) {
-            case "animales":
-                this.roomName = "Animales";
-                break;
-            case "zoologicos":
-                this.roomName = "Zoologicos";
-                break;
-            case "eventos":
-                this.roomName = "Eventos";
-                break;
-            default:
-                this.roomName = "General";
-        }
+        this.roomName = currentRoute;
+        // switch (currentRoute) {
+        //     case "animales":
+        //         this.roomName = "Animales";
+        //         break;
+        //     case "zoologicos":
+        //         this.roomName = "Zoologicos";
+        //         break;
+        //     case "eventos":
+        //         this.roomName = "Eventos";
+        //         break;
+        //     default:
+        //         this.roomName = "General";
+        // }
 
         // Escuchar mensajes del servidor
         socket.onmessage = (event) => {
