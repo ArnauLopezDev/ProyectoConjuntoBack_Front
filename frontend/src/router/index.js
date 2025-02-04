@@ -25,12 +25,12 @@ const router = createRouter({
     {
       path: "/animales",
       name: "animales",
-      component: () => import("../views/animalesPageView.vue"),
+      component: () => import("../views/AnimalsListView.vue"),
     },
     {
-      path: "/animales/:id",
+      path: "/animales/:animalid",
       name: "animal",
-      component: () => import("../views/animalesPageView.vue"),
+      component: () => import("../views/AnimalDetailView.vue"),
     },
     {
       path: "/eventos",
@@ -56,7 +56,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import("../views/AboutView.vue"),
-    }
+    },
   ],
 })
 

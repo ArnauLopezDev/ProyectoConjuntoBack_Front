@@ -1,10 +1,10 @@
 const mysql = require('mysql2');
 const config = require('../config/config.js');
 const mysqlClient = mysql.createConnection({
-    host: config.MYSQL_HOST,
-    user: config.MYSQL_USER,
-    password: config.MYSQL_PASSWORD,
-    database: config.MYSQL_DATABASE
+    host: config.MYSQL_HOST || "db",
+    user: config.MYSQL_USER || "user",
+    password: config.MYSQL_PASSWORD || "user",
+    database: config.MYSQL_DATABASE || "zoologicos"
 });
 
 mysqlClient.connect((err) => {
