@@ -1,7 +1,5 @@
-// Copiar y pegar a lo largo del codigo para ir haciendo comprobaciones. En un futuro esto se tendra que ejecutar una sola vez desde el docker
-
-
 const { MongoClient } = require("mongodb");
+
 
 async function main() {
     const uri = "mongodb://localhost:27017"; // Cambiar esto si se cambia

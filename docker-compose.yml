@@ -54,6 +54,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root     # Initialize root password
     volumes:
       - mongo_data:/data/db
+      - ./backend/init_mongo:/docker-entrypoint-initdb.d/:ro
 
   frontend:
     build:

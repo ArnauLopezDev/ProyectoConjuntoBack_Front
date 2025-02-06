@@ -14,7 +14,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import api from '../services/api';
-import socket from '../services/websocket';
+import socket from '../services/socket';
 import animalCard from './AnimalCard.vue';
 
 const animals = ref([]);

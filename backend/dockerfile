@@ -5,10 +5,10 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copiamos los archivos de package.json y package-lock.json
-COPY src/package*.json ./
+COPY src/package*.json /app/
 
 # Instalamos las dependencias necesarias
-RUN npm install --frozen-lockfile
+RUN npm install
 
 # Copiamos el resto de los archivos de la aplicación
 COPY . .

@@ -6,6 +6,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const redisClient = require('./services/redis.service.js');
 const config = require('./config/config.js');
+
 // Rutas
 const animalsRoutes = require('./routes/animals.Routes.js');
 

@@ -23,7 +23,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '../services/api';
-import socket from '../services/websocket';
+import socket from '../services/socket';
 
 const route = useRoute();
 const animal = ref(null);
