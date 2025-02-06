@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import socket from "@/socket";
+import socket from "@/services/socket";
 
 export default {
     data() {

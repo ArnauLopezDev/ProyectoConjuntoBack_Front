@@ -4,33 +4,47 @@
         <h1>All Animals</h1>
         <div v-if="loading" class="loading">Loading animals...</div>
         <div v-if="error" class="error">Error: {{ error }}</div>
-
         <div v-if="!loading && !error" class="animal-grid">
             <animalCard v-for="animal in animals" :key="animal.id_animal" :animal="animal" class="animal-card">
-
             </animalCard>
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import api from '../services/api';
+import socket from '../services/websocket';
 import animalCard from './AnimalCard.vue';
+
 const animals = ref([]);
 const loading = ref(true);
 const error = ref(null);
 
-onMounted(async () => {
+async function fetchAnimals() {
     try {
         const response = await api.get('/');
-        console.log(response.data);
         animals.value = response.data;
     } catch (err) {
         error.value = err.message;
     } finally {
         loading.value = false;
     }
+}
+
+onMounted(async () => {
+    await fetchAnimals();
+
+    // Listen for real-time updates on the global animals list
+    socket.on('animals-update', (updatedAnimals) => {
+        // Update the animals list with new data
+        animals.value = updatedAnimals;
+    });
+});
+
+onBeforeUnmount(() => {
+    // Clean up the socket listener when the component is destroyed
+    socket.off('animals-update');
 });
 </script>
 

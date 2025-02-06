@@ -20,16 +20,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '../services/api';
+import socket from '../services/websocket';
 
 const route = useRoute();
 const animal = ref(null);
 const loading = ref(true);
 const error = ref(null);
 
-onMounted(async () => {
+async function fetchAnimal() {
     try {
         const response = await api.get(`/${route.params.id}`);
         animal.value = response.data;
@@ -38,6 +39,21 @@ onMounted(async () => {
     } finally {
         loading.value = false;
     }
+}
+
+onMounted(async () => {
+    await fetchAnimal();
+
+    // Listen for updates specific to this animal
+    const eventName = `animal-update-${route.params.id}`;
+    socket.on(eventName, (updatedAnimal) => {
+        animal.value = updatedAnimal;
+    });
+});
+
+onBeforeUnmount(() => {
+    const eventName = `animal-update-${route.params.id}`;
+    socket.off(eventName);
 });
 </script>
 
