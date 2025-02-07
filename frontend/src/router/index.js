@@ -29,7 +29,8 @@ const router = createRouter({
     },
     {
       path: "/animales/:animalid",
-      name: "animal",
+      name: "animalesIndiv",
+      props: true,
       component: () => import("../views/AnimalDetailView.vue"),
     },
     {

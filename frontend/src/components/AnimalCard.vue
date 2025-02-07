@@ -1,6 +1,11 @@
 <script setup>
-const props = defineProps(["animal"])
+import { onMounted } from 'vue';
 
+const props = defineProps(["animal"]);
+onMounted(async () => {
+
+    console.log(props.animal);
+})
 </script>
 
 <template>
@@ -11,8 +16,12 @@ const props = defineProps(["animal"])
         <p>Habitat: {{ props.animal.habitat }}</p>
         <p>Estado de salud: {{ props.animal.estado_salud }}</p>
         <p>Dieta: {{ props.animal.dieta }}</p>
-        <button class="btn btn-primary"
-            @click="$router.push({ name: 'animales', params: { animalid: props.animal.id_animal } })">See
+        <button class="btn btn-primary" @click="$router.push({
+            name: 'animalesIndiv', params: {
+                animalid: props.animal.id_animal
+            }
+        })">See
             more</button>
+        <p>Animal: {{ props.animal.id_animal }}</p>
     </div>
 </template>
