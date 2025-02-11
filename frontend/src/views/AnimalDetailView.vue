@@ -34,7 +34,7 @@ const error = ref(null);
 const props = defineProps(["animalid"]);
 async function fetchAnimal() {
     try {
-        const response = await api.get(`/${props.animalid}`);
+        const response = await api.get(`/animals/  ${props.animalid}`);
         animal.value = response.data;
         console.log(response.data);
     } catch (err) {

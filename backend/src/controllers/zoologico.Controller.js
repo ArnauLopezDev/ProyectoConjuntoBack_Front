@@ -12,7 +12,7 @@ exports.getZoologicos = async (req, res) => {
 exports.createZoologico = async (req, res) => {
     const { nombre, ubicacion, horario_apertura, horario_cierre } = req.body;
     try {
-        const newZoologico = await zoologicoModel.create(nombre, ubicacion, horario_apertura, horario_cierre);
+        const newZoologico = await zoologicoModel.createZoologico(nombre, ubicacion, horario_apertura, horario_cierre);
         res.status(201).json(newZoologico);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el zoológico', error });
@@ -21,7 +21,7 @@ exports.createZoologico = async (req, res) => {
 
 exports.getZoologicoById = async (req, res) => {
     try {
-        const zoologico = await zoologicoModel.getById(parseInt(req.params.id));
+        const zoologico = await zoologicoModel.getZoologicoById(parseInt(req.params.id));
         if (!zoologico) {
             return res.status(404).json({ message: 'Zoológico no encontrado' });
         }
@@ -34,7 +34,7 @@ exports.getZoologicoById = async (req, res) => {
 exports.updateZoologico = async (req, res) => {
     const { nombre, ubicacion, horario_apertura, horario_cierre } = req.body;
     try {
-        const success = await zoologicoModel.update(
+        const success = await zoologicoModel.updateZoologico(
             parseInt(req.params.id),
             nombre,
             ubicacion,
@@ -52,7 +52,7 @@ exports.updateZoologico = async (req, res) => {
 
 exports.deleteZoologico = async (req, res) => {
     try {
-        const success = await zoologicoModel.delete(parseInt(req.params.id));
+        const success = await zoologicoModel.deleteZoologico(parseInt(req.params.id));
         if (!success) {
             return res.status(404).json({ message: 'Zoológico no encontrado' });
         }

@@ -51,7 +51,7 @@ const zoologico = ref(null);
 const events = ref([]);
 const loading = ref(true);
 const error = ref(null);
-const loadingCount = ref(2); // Para controlar la carga de ambas funciones
+const loadingCount = ref(2);
 
 async function fetchZoologico() {
     try {

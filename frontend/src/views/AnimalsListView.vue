@@ -26,7 +26,7 @@ async function fetchAnimals() {
         const endpoint = props.zoologicoid
             ? `/zoologicos/${props.zoologicoid}/animals`
             : '/animals';
-
+        console.log(endpoint);
         const response = await api.get(endpoint);
         animals.value = response.data;
     } catch (err) {
