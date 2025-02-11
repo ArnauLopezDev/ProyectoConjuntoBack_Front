@@ -2,7 +2,7 @@ const eventoModel = require('../models/eventos.model.js');
 
 exports.getEventos = async (req, res) => {
     try {
-        const eventos = await eventoModel.getAll();
+        const eventos = await eventoModel.eventos.getAll();
         res.status(200).json(eventos);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los eventos', error });
@@ -12,7 +12,7 @@ exports.getEventos = async (req, res) => {
 exports.createEvento = async (req, res) => {
     const { nombre_evento, fecha, descripcion, id_zoologico } = req.body;
     try {
-        const newEvento = await eventoModel.create(nombre_evento, fecha, descripcion, id_zoologico);
+        const newEvento = await eventoModel.eventos.create(nombre_evento, fecha, descripcion, id_zoologico);
         res.status(201).json(newEvento);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el evento', error });
@@ -21,7 +21,7 @@ exports.createEvento = async (req, res) => {
 
 exports.getEventoById = async (req, res) => {
     try {
-        const evento = await eventoModel.getById(parseInt(req.params.id));
+        const evento = await eventoModel.eventos.getById(parseInt(req.params.id));
         if (!evento) {
             return res.status(404).json({ message: 'Evento no encontrado' });
         }
@@ -34,7 +34,7 @@ exports.getEventoById = async (req, res) => {
 exports.updateEvento = async (req, res) => {
     const { nombre_evento, fecha, descripcion, id_zoologico } = req.body;
     try {
-        const success = await eventoModel.update(
+        const success = await eventoModel.eventos.update(
             parseInt(req.params.id),
             nombre_evento,
             fecha,
@@ -52,7 +52,7 @@ exports.updateEvento = async (req, res) => {
 
 exports.deleteEvento = async (req, res) => {
     try {
-        const success = await eventoModel.delete(parseInt(req.params.id));
+        const success = await eventoModel.eventos.delete(parseInt(req.params.id));
         if (!success) {
             return res.status(404).json({ message: 'Evento no encontrado' });
         }

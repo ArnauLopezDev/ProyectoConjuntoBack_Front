@@ -2,7 +2,7 @@ const ticketModel = require('../models/tickets.model.js');
 
 exports.getTickets = async (req, res) => {
     try {
-        const tickets = await ticketModel.getAll();
+        const tickets = await ticketModel.tickets.getAll();
         res.status(200).json(tickets);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los tickets', error });
@@ -12,7 +12,7 @@ exports.getTickets = async (req, res) => {
 exports.createTicket = async (req, res) => {
     const { fecha_compra, id_usuario, id_evento } = req.body;
     try {
-        const newTicket = await ticketModel.create(fecha_compra, id_usuario, id_evento);
+        const newTicket = await ticketModel.tickets.create(fecha_compra, id_usuario, id_evento);
         res.status(201).json(newTicket);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el ticket', error });
@@ -21,7 +21,7 @@ exports.createTicket = async (req, res) => {
 
 exports.getTicketById = async (req, res) => {
     try {
-        const ticket = await ticketModel.getById(parseInt(req.params.id));
+        const ticket = await ticketModel.tickets.getById(parseInt(req.params.id));
         if (!ticket) {
             return res.status(404).json({ message: 'Ticket no encontrado' });
         }
@@ -34,7 +34,7 @@ exports.getTicketById = async (req, res) => {
 exports.updateTicket = async (req, res) => {
     const { fecha_compra, id_usuario, id_evento } = req.body;
     try {
-        const success = await ticketModel.update(
+        const success = await ticketModel.tickets.update(
             parseInt(req.params.id),
             fecha_compra,
             id_usuario,
@@ -51,7 +51,7 @@ exports.updateTicket = async (req, res) => {
 
 exports.deleteTicket = async (req, res) => {
     try {
-        const success = await ticketModel.delete(parseInt(req.params.id));
+        const success = await ticketModel.tickets.delete(parseInt(req.params.id));
         if (!success) {
             return res.status(404).json({ message: 'Ticket no encontrado' });
         }

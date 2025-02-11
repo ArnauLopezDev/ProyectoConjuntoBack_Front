@@ -11,9 +11,10 @@ onMounted(async () => {
             <section>
                 <h2>{{ props.zoologico.name }}</h2>
                 <p> {{ props.zoologico.description }}</p>
+                <p>{{ props.zoologico.ubicacion }}</p>
                 <br>
                 <h2>Horarios</h2>
-                <p>{{ props.zoologico.horarios }}</p>
+                <p>De las {{ props.zoologico.horario_apertura }} hasta las {{ props.zoologico.horario_cierre }} </p>
                 <br>
                 <h2>Mapa</h2>
                 <iframe>{{ props.zoologico.mapa }}</iframe>

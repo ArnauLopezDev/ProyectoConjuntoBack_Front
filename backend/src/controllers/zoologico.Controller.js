@@ -2,7 +2,7 @@ const zoologicoModel = require('../models/zoologicos.model.js');
 
 exports.getZoologicos = async (req, res) => {
     try {
-        const zoologicos = await zoologicoModel.getAll();
+        const zoologicos = await zoologicoModel.getAllZooos();
         res.status(200).json(zoologicos);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los zoológicos', error });

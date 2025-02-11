@@ -4,55 +4,40 @@
         <h1>All Animals</h1>
         <div v-if="loading" class="loading">Loading animals...</div>
         <div v-if="error" class="error">Error: {{ error }}</div>
-        <div v-if="!loading && !error" class="animal-grid">
-            <animalCard v-for="animal in animals" :key="animal.id_animal" :animal="animal" class="animal-card">
-            </animalCard>
+        <div v-if="!loading && !error && animals.length > 0" class="animal-grid">
+            <AnimalCard v-for="animal in animals" :key="animal.id_animal" :animal="animal" class="animal-card" />
         </div>
+        <p v-if="!loading && !error && animals.length === 0">No animals found.</p>
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import animalCard from '../components/AnimalCard.vue';
+import AnimalCard from '../components/AnimalCard.vue';
 import api from '../services/api';
+
 const props = defineProps(["zoologicoid"]);
 const animals = ref([]);
 const loading = ref(true);
 const error = ref(null);
+
 async function fetchAnimals() {
     try {
-        if (props.zoologicoid) {
-            const response = await api.get(`/${props.zoologicoid}/animals`);
-            animals.value = response.data;
-            console.log(response.data);
-        } else {
-            const response = await api.get('/');
-            console.log(response);
-            animals.value = response.data;
-        }
+        const endpoint = props.zoologicoid
+            ? `/zoologicos/${props.zoologicoid}/animals`
+            : '/animals';
+
+        const response = await api.get(endpoint);
+        animals.value = response.data;
     } catch (err) {
+        console.error("Error fetching animals:", err);
         error.value = err.message;
     } finally {
         loading.value = false;
     }
 }
-onMounted(async () => {
-    await fetchAnimals();
-})
-onMounted(async () => {
-    await fetchAnimals();
 
-    // // Listen for real-time updates on the global animals list
-    // socket.on('animals-update', (updatedAnimals) => {
-    //     // Update the animals list with new data
-    //     animals.value = updatedAnimals;
-    // });
-});
-
-// onBeforeUnmount(() => {
-//     // Clean up the socket listener when the component is destroyed
-//     socket.off('animals-update');
-// });
+onMounted(fetchAnimals);
 </script>
 
 <style scoped>
