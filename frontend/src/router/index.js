@@ -39,8 +39,9 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/eventos/:id",
+      path: "/eventos/:eventid",
       name: "evento",
+      props: true,
       component: () => import("../views/AboutView.vue"),
     },
     {
@@ -49,8 +50,9 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/zoologicos/:id",
+      path: "/zoologicos/:zoologicoid",
       name: "zoologico",
+      props: true,
       component: () => import("../views/AboutView.vue"),
     },
     {

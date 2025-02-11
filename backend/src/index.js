@@ -9,7 +9,9 @@ const config = require('./config/config.js');
 
 // Rutas
 const animalsRoutes = require('./routes/animals.Routes.js');
-
+const eventosRoutes = require('./routes/eventos.Routes.js');
+const ticketsRoutes = require('./routes/tickets.Routes.js');
+const zoologicosRoutes = require('./routes/zoologicos.Routes.js');
 const app = express();
 const port = config.port || 3000;
 
@@ -20,7 +22,9 @@ app.use(express.static('public'));
 
 // Rutas de la API REST
 app.use('/api/animals', animalsRoutes);
-
+app.use('/api/eventos', eventosRoutes);
+app.use('/api/tickets', ticketsRoutes);
+app.use('/api/zoologicos', zoologicosRoutes);
 // Crear el servidor HTTP y WebSocket
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });

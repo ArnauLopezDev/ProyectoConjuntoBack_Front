@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 const props = defineProps(["zoologico"]);
 onMounted(async () => {
     console.log(props.zoologico);
@@ -7,22 +7,23 @@ onMounted(async () => {
 </script>
 <template>
     <div class="zoologico-card">
-        <h3>{{ props.zoologico.name }}</h3>
-        <p> {{ props.zoologico.description }}</p>
-        <hr>
-        <br>
-        <p> {{ props.zoologico.services }}</p>
-        <hr>
-        <br>
-        <p>{{props.zoologico.animales}}</p>
-        <hr>
-        <br>
-        <p>{{props.zoologico.horarios}}</p>
-        <hr>
-        <br>
-        <p>{{props.zoologico.entradas}}</p>
-        <hr>
-        <br>
-        <p>{{props.zoologico.mapa}}</p>
+        <main>
+            <section>
+                <h2>{{ props.zoologico.name }}</h2>
+                <p> {{ props.zoologico.description }}</p>
+                <br>
+                <h2>Horarios</h2>
+                <p>{{ props.zoologico.horarios }}</p>
+                <br>
+                <h2>Mapa</h2>
+                <iframe>{{ props.zoologico.mapa }}</iframe>
+                <button class="btn btn-primary" @click="$router.push({
+                    name: 'zoologicosIndiv', params: {
+                        zoologicoid: props.zoologico.id_zoologico
+                    }
+                })">See
+                    more</button>
+            </section>
+        </main>
     </div>
 </template>
