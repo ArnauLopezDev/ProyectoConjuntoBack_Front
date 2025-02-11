@@ -51,7 +51,7 @@ const router = createRouter({
     },
     {
       path: "/zoologicos/:zoologicoid",
-      name: "zoologico",
+      name: "zoologicosIndiv",
       props: true,
       component: () => import("../views/ZoologicoDetailView.vue"),
     },
