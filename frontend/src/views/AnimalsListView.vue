@@ -15,12 +15,16 @@
 import { onMounted, ref } from 'vue';
 import animalCard from '../components/AnimalCard.vue';
 import api from '../services/api';
-
+const props = defineProps(["zoologicoid"]);
 const animals = ref([]);
 const loading = ref(true);
 const error = ref(null);
 async function fetchAnimals() {
     try {
+        if (props.zoologicoid) {
+            const response = await api.get(`/${props.zoologicoid}/animals`);
+            animals.value = response.data;
+        }
         const response = await api.get('/');
         console.log(response);
         animals.value = response.data;

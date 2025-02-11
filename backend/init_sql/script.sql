@@ -18,9 +18,6 @@ CREATE TABLE Zoologicos (
     horario_cierre TIME NOT NULL
 );
 
--- Insert sample zoo first
-INSERT INTO Zoologicos (name, ubicacion, horario_apertura, horario_cierre) VALUES
-('Zoológico Central', 'Ciudad Ejemplo', '09:00:00', '18:00:00');
 
 CREATE TABLE Animales (
     id_animal INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,10 +31,6 @@ CREATE TABLE Animales (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Now insert animals referencing the existing zoo (id_zoologico = 1)
-INSERT INTO Animales (name, specie, habitat, dieta, estado_salud, id_zoologico) VALUES
-('León', 'Panthera leo', 'Sabana', 'Carnívoro', 'Saludable', 1),
-('Elefante', 'Loxodonta', 'Selva', 'Herbívoro', 'Saludable', 1);
 
 CREATE TABLE Eventos (
     id_evento INT AUTO_INCREMENT PRIMARY KEY,

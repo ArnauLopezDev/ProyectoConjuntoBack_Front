@@ -41,4 +41,8 @@ exports.zoologicos = {
         const [result] = await pool.query("DELETE FROM Zoologicos WHERE id_zoologico = ?", [id]);
         return result.affectedRows > 0;
     },
+    async getAnimalByZooID(id) {
+        const [rows] = await pool.query("SELECT * FROM Animales WHERE id_zoologico = ?", [id]);
+        return rows;
+    },
 };
