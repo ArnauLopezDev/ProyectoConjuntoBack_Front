@@ -24,10 +24,12 @@ async function fetchAnimals() {
         if (props.zoologicoid) {
             const response = await api.get(`/${props.zoologicoid}/animals`);
             animals.value = response.data;
+            console.log(response.data);
+        } else {
+            const response = await api.get('/');
+            console.log(response);
+            animals.value = response.data;
         }
-        const response = await api.get('/');
-        console.log(response);
-        animals.value = response.data;
     } catch (err) {
         error.value = err.message;
     } finally {

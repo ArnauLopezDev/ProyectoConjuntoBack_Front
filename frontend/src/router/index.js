@@ -47,13 +47,13 @@ const router = createRouter({
     {
       path: "/zoologicos",
       name: "zoologicos",
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("../views/ZoologicoListView.vue"),
     },
     {
       path: "/zoologicos/:zoologicoid",
       name: "zoologico",
       props: true,
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("../views/ZoologicoDetailView.vue"),
     },
     {
       path: "/admin",

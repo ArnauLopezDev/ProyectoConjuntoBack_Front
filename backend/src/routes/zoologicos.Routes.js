@@ -5,7 +5,7 @@ const zoologicoController = require('../controllers/zoologico.Controller');
 // Rutas publicas
 router.get('/', zoologicoController.getZoologicos);
 router.get('/:id', zoologicoController.getZoologicoById);
-router.get('/:id/animals', zoologicoController.getAnimalByZooID);
+router.get('/:id/animals', zoologicoController.getAnimalsByZoologico);
 // Rutas protegidas por rol de administrador
 router.post('/', zoologicoController.createZoologico);
 router.put('/:id', zoologicoController.updateZoologico);
