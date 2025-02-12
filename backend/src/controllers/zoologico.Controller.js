@@ -64,7 +64,7 @@ exports.deleteZoologico = async (req, res) => {
 
 exports.getAnimalsByZoologico = async (req, res) => {
     try {
-        const animals = await zoologicoModel.getAnimalsByZoologico(parseInt(req.params.id));
+        const animals = await zoologicoModel.getAnimalByZooID(parseInt(req.params.id));
         res.status(200).json(animals);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los animales del zoológico', error });

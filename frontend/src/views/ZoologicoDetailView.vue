@@ -14,7 +14,7 @@
                     <p>{{ zoologico.services }}</p>
                     <br>
                     <h2>Animales:</h2>
-                    <AnimalsListView />
+                    <AnimalsListView :zoologicoid="props.zoologicoid" />
                     <br>
                     <h2>Horarios:</h2>
                     <p>{{ zoologico.horarios }}</p>
