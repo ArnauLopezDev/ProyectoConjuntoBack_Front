@@ -36,13 +36,13 @@ const router = createRouter({
     {
       path: "/eventos",
       name: "eventos",
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("../views/EventListView.vue"),
     },
     {
       path: "/eventos/:eventid",
-      name: "evento",
+      name: "eventosIndiv",
       props: true,
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("../views/EventDetailView.vue"),
     },
     {
       path: "/zoologicos",
@@ -54,6 +54,19 @@ const router = createRouter({
       name: "zoologicosIndiv",
       props: true,
       component: () => import("../views/ZoologicoDetailView.vue"),
+    },
+
+    {
+      path: '/zoologicos/:zoologicoid/comentarios',
+      name: 'comentariosZoologico',
+      props: true,
+      component: () => import('../views/ComentariosListView.vue'),
+    },
+
+    {
+      path: '/comentarios',
+      name: 'comentarios',
+      component: () => import('../views/ComentariosListView.vue'),
     },
     {
       path: "/admin",

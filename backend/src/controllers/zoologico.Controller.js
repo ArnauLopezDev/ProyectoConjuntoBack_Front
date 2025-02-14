@@ -70,3 +70,11 @@ exports.getAnimalsByZoologico = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los animales del zoológico', error });
     }
 };
+exports.getEventosByZoologico = async (req, res) => {
+    try {
+        const eventos = await zoologicoModel.getEventosByZooID(parseInt(req.params.id));
+        res.status(200).json(eventos);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los eventos del zoológico', error });
+    }
+};

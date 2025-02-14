@@ -75,6 +75,15 @@ exports.getAnimalByZooID = async (id) => {
     }
 };
 
+exports.getEventosByZooID = async (id) => {
+    try {
+        const [rows] = await pool.query("SELECT * FROM Eventos WHERE id_zoologico = ?", [id]);
+        return rows;
+    } catch (error) {
+        console.error("Error getting zoos: ", error);
+        throw error;
+    }
+};
 // exports.zoologicos = {
 //     async getAll() {
 //         const [rows] = await pool.query("SELECT * FROM Zoologicos");

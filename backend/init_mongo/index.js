@@ -53,8 +53,32 @@ db = db.getSiblingDB('zoologico');
 db.createCollection('comentarios');
 db.comentarios.insertMany([
     {
+        id_usuario_sql: 2,
+        id_referencia_sql: 1,
+        tipo_referencia: 'zoologico',
+        contenido: 'Este artículo es muy interesante, ¡me encantó la forma en que se presentó la información!',
+        fecha_comentario: new Date(),
+        respuestas: []
+    },
+    {
+        id_usuario_sql: 3,
+        id_referencia_sql: 1,
+        tipo_referencia: 'zoologico',
+        contenido: 'Buen análisis, pero creo que faltaron algunos detalles importantes.',
+        fecha_comentario: new Date(),
+        respuestas: []
+    },
+    {
+        id_usuario_sql: 4,
+        id_referencia_sql: 2,
+        tipo_referencia: 'evento',
+        contenido: 'El evento fue espectacular, espero que se repita pronto.',
+        fecha_comentario: new Date(),
+        respuestas: []
+    },
+    {
         id_usuario_sql: 101,
-        id_referencia_sql: 205,
+        id_referencia_sql: 2,
         tipo_referencia: "animal",
         contenido: "¡El león Simba es impresionante! ¿Tiene un horario específico para verlo?",
         fecha_comentario: new Date("2025-01-20T14:23:00Z"),
