@@ -1,3 +1,4 @@
+// services/auth.service.js
 const jwt = require("jsonwebtoken");
 const config = require("../config/config.js");
 
@@ -6,7 +7,14 @@ const signToken = (payload) => {
 };
 
 const verifyToken = (token) => {
-    return jwt.verify(token, config.AUTH_SECRET_KEY);
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, config.AUTH_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(decoded);
+        });
+    });
 };
 
 module.exports = {

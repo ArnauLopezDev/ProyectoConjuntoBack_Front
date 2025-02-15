@@ -1,63 +1,88 @@
-const auth = require('../services/auth.service.js');
+// controllers/auth.controller.js
 const bcrypt = require('bcrypt');
-const db = require('../config/config.js');
+const { getUserByEmail, createUser } = require('../models/users.models.js');
+const auth = require('../services/auth.service.js');
+const redisClient = require('../services/redis.service.js');
 
-// Registro de usuario
-exports.signup = async (req, res) => {
-    const { nombre, email, contrasena, rol } = req.body;
+const register = async (req, res) => {
+    console.log("Incoming registration request:", req.body); // Debugging line
+
+    const { name, email, contrasena, rol } = req.body;
+
+    if (!name || !email || !contrasena) {
+        console.log("Validation error: Missing required fields"); // Debugging line
+        return res.status(400).json({ error: "Missing required fields" });
+    }
 
     try {
-        // Verificar si el usuario ya existe
-        const [existingUser] = await db.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
-        if (existingUser.length > 0) {
-            return res.status(400).json({ error: 'The email is already registered.' });
+        console.log("Checking if user exists:", email);
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+            console.log("User already exists:", email);
+            return res.status(409).json({ error: "User already exists" });
+        }
+        if (typeof contrasena !== 'string') {
+            console.log("Password is not a string:", contrasena);
+            return res.status(400).json({ error: "Invalid password format" });
         }
 
-        // Hashear la contraseña y guardar el usuario
-        const hashedPassword = await bcrypt.hash(contrasena, 10);
-        await db.query(
-            'INSERT INTO Usuarios (nombre, email, contrasena, rol) VALUES (?, ?, ?, ?)',
-            [nombre, email, hashedPassword, rol || 'visitante']
-        );
+        console.log("Hashing password...");
+        const hashedPassword = await bcrypt.hash(contrasena, 12);
+        const userRole = rol || "visitante";
 
-        res.status(201).json({ message: 'User registered successfully.' });
+        console.log("Creating user in database...");
+        const newUserId = await createUser({
+            name,
+            email,
+            contrasena: hashedPassword,
+            rol: userRole,
+        });
+
+        console.log("User registered successfully:", newUserId);
+        res.status(201).json({ message: "User registered successfully", id_usuario: newUserId });
     } catch (error) {
-        console.error('Error during user registration:', error.message);
-        res.status(500).json({ error: 'Internal server error.' });
+        console.error("Registration error:", error);
+        res.status(500).json({ error: "Registration error", details: error.message });
     }
 };
 
-// Inicio de sesión
-exports.login = async (req, res) => {
+
+const login = async (req, res) => {
     const { email, contrasena } = req.body;
 
+    if (!email || !contrasena) {
+        return res.status(400).json({ error: 'Email and password are required' });
+    }
+
     try {
-        // Verificar si el usuario existe
-        const [userResult] = await db.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
-        const user = userResult[0];
+        const user = await getUserByEmail(email);
         if (!user) {
-            return res.status(404).json({ error: 'User not found.' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Verificar la contraseña
-        const isPasswordValid = await bcrypt.compare(contrasena, user.contrasena);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Incorrect password.' });
+        // Compare the provided password with the stored hashed password
+        const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Generar el token
-        const token = auth.signToken({
-            id: user.id_usuario,
-            email: user.email,
-            isAdmin: user.rol === 'administrador',
+        // Create a JWT token with user info (using user.id_usuario, email, and rol)
+        const token = auth.signToken({ id: user.id_usuario, email: user.email, rol: user.rol });
+
+        // Store the token in Redis with a key like `session:<user_id>`
+        redisClient.set(`session:${user.id_usuario}`, token, (err) => {
+            if (err) {
+                console.error('Error saving session in Redis:', err.message);
+            }
         });
 
-        // Guardar el token en Redis
-        redisClient.set(`session:${user.id_usuario}`, token);
-
-        res.status(200).json({ message: 'Login successful.', token });
+        res.status(200).json({ token });
     } catch (error) {
-        console.error('Error during login:', error.message);
-        res.status(500).json({ error: 'Internal server error.' });
+        res.status(500).json({ error: 'Login error', details: error.message });
     }
+};
+
+module.exports = {
+    register,
+    login,
 };

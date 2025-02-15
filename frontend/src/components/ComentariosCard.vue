@@ -51,7 +51,7 @@ const submitReply = async () => {
 <template>
     <div class="comentarios-card">
         <h3>{{ props.comentario.user }}</h3>
-        <p>{{ props.comentario.comentario }}</p>
+        <p>{{ props.comentario.contenido }}</p> #si contenido no funciona hacer con comentario en vez de contenido
         <button class="btn btn-primary" @click="replyComment">Reply</button>
 
         <!-- Se muestra el formulario de respuesta solo si se activa -->

@@ -1,26 +1,26 @@
 const redisClient = require('../services/redis.service.js');
 
-exports.getChatHistory = (req, res) => {
+// Using a Promise-based approach (if supported)
+exports.getChatHistory = async (req, res) => {
     const { room } = req.params;
 
     if (!room) {
         return res.status(400).json({ error: 'Room parameter is required' });
     }
 
-    redisClient.lrange(`chat:${room}`, 0, -1, (err, messages) => {
-        if (err) {
-            console.error('Error retrieving chat history from Redis:', err.message);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
-
+    try {
+        const messages = await redisClient.lrangeAsync(`chat:${room}`, 0, -1);
         const parsedMessages = messages.map((msg) => {
             try {
                 return JSON.parse(msg);
             } catch {
-                return null; // Manejar mensajes corruptos
+                return null;
             }
-        }).filter(Boolean); // Eliminar mensajes corruptos
+        }).filter(Boolean);
 
         res.status(200).json(parsedMessages);
-    });
+    } catch (err) {
+        console.error('Error retrieving chat history from Redis:', err.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
