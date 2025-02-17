@@ -80,20 +80,20 @@ INSERT INTO Usuarios (name, email, contrasena, rol) VALUES
 
 -- Insert sample zoos
 INSERT INTO Zoologicos (name, description, ubicacion, horario_apertura, horario_cierre, mapa) VALUES
-('Safari Zoo', 'descripcion del zoo 1','123 Jungle Road, Wildlife City' ,'08:00:00', '18:00:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47828.5940240045!2d2.21082917454835!3d41.47637449525422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4b933e36df3b3%3A0x36f3f3eb05d8534c!2sMasia%20Mas%20Corts!5e0!3m2!1ses!2ses!4v1739792698500!5m2!1ses!2ses' ),
-('Ocean Park', 'descripcion del zoo 2' ,'456 Seaside Avenue, Marine Town', '09:00:00', '19:00:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47828.5940240045!2d2.21082917454835!3d41.47637449525422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4b933e36df3b3%3A0x36f3f3eb05d8534c!2sMasia%20Mas%20Corts!5e0!3m2!1ses!2ses!4v1739792698500!5m2!1ses!2ses');
+('Safari Zoo', 'Description of zoo 1', '123 Jungle Road, Wildlife City', '08:00:00', '18:00:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47828.5940240045!2d2.21082917454835!3d41.47637449525422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4b933e36df3b3%3A0x36f3f3eb05d8534c!2sMasia%20Mas%20Corts!5e0!3m2!1ses!2ses!4v1739792698500!5m2!1ses!2ses'),
+('Ocean Park', 'Description of zoo 2', '456 Seaside Avenue, Marine Town', '09:00:00', '19:00:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47828.5940240045!2d2.21082917454835!3d41.47637449525422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4b933e36df3b3%3A0x36f3f3eb05d8534c!2sMasia%20Mas%20Corts!5e0!3m2!1ses!2ses!4v1739792698500!5m2!1ses!2ses');
 
 -- Insert sample animals
-INSERT INTO Animales (image,name, species, habitat, dieta, estado_salud, id_zoologico) VALUES
-('lion_image.jpg','Leo', 'León', 'Sabana', 'Carnívoro', 'Saludable', 1),
-('panda_image.jpg','Panda', 'Oso Panda', 'Bosque de Bambú', 'Herbívoro', 'Saludable', 1),
-('dolphin_image.jpg','Dolphin', 'Delfín', 'Océano', 'Pescado', 'En tratamiento', 2),
-('penguin_image.jpg','Penguin', 'Pingüino', 'Zona helada', 'Pescado', 'Saludable', 2);
+INSERT INTO Animales (image, name, species, habitat, dieta, estado_salud, id_zoologico) VALUES
+('lion_image.jpg', 'Leo', 'Lion', 'Savanna', 'Carnivore', 'Healthy', 1),
+('panda_image.jpg', 'Panda', 'Giant Panda', 'Bamboo Forest', 'Herbivore', 'Healthy', 1),
+('dolphin_image.jpg', 'Dolphin', 'Dolphin', 'Ocean', 'Fish', 'Under treatment', 2),
+('penguin_image.jpg', 'Penguin', 'Penguin', 'Frozen Zone', 'Fish', 'Healthy', 2);
 
 -- Insert sample events
-INSERT INTO Eventos (image,name_evento, fecha,tiempo, location, descripcion, id_zoologico) VALUES
-('imageEevento1','Día de los Animales', '2025-03-01', '10:00', 'Centro de Zoologico', 'Un evento para concienciar sobre la protección animal.', 1),
-('imageEvento2','Show de Delfines', '2025-04-15', '14:00', 'Centro de Zoologico', 'Una exhibición especial de delfines entrenados.', 2);
+INSERT INTO Eventos (image, name_evento, fecha, tiempo, location, descripcion, id_zoologico) VALUES
+('event_image1', 'Animals Day', '2025-03-01', '10:00', 'Zoo Center', 'An event to meet the animals of our zoo.', 1),
+('event_image2', 'Dolphin Show', '2025-04-15', '14:00', 'Zoo Center', 'An exhibition of trained dolphins.', 2);
 
 -- Insert sample tickets
 INSERT INTO Tickets (fecha_compra, id_usuario, id_evento) VALUES
