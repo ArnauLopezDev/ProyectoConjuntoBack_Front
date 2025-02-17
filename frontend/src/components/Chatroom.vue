@@ -84,41 +84,56 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .chat-room {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    max-width: 500px;
-    margin: 20px auto;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
     background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-room h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    height: 300px;
-    overflow-y: scroll;
-    margin-bottom: 10px;
-    background-color: #fff;
-}
-
-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+    border-radius: 10px;
+    background-color: white;
 }
 
 .message {
     margin-bottom: 10px;
-    color: black;
+}
+
+.message strong {
+    color: #333;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 </style>

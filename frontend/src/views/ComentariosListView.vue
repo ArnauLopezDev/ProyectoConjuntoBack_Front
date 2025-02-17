@@ -41,3 +41,49 @@ const fetchComentarios = async () => {
 
 onMounted(fetchComentarios);
 </script>
+<style scoped>
+.comentarios-list {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.comentarios-list h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.comentarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.comentarios-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.comentarios-card:hover {
+    transform: translateY(-10px);
+}
+
+.no-comentarios {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+</style>

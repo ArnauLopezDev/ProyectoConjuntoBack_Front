@@ -46,3 +46,58 @@ onMounted(async () => {
     await fetchEvent();
 });
 </script>
+
+<style scoped>
+.event-detail {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.event-content {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-content h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.event-info {
+    width: 100%;
+}
+
+.event-info p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.event-info p strong {
+    color: #333;
+}
+
+</style>
