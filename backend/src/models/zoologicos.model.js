@@ -23,13 +23,13 @@ exports.getAllZooos = async () => {
         throw error;
     }
 };
-exports.createZoologico = async (nombre, description, ubicacion, horario_apertura, horario_cierre, mapa) => {
+exports.createZoologico = async (name, description, ubicacion, horario_apertura, horario_cierre, mapa) => {
     try {
         const [result] = await pool.query(
-            "INSERT INTO Zoologicos (nombre, description ,ubicacion, horario_apertura, horario_cierre, mapa) VALUES (?, ?,?, ?, ?, ?)",
-            [nombre, description, ubicacion, horario_apertura, horario_cierre, mapa]
+            "INSERT INTO Zoologicos (name, description ,ubicacion, horario_apertura, horario_cierre, mapa) VALUES (?, ?,?, ?, ?, ?)",
+            [name, description, ubicacion, horario_apertura, horario_cierre, mapa]
         );
-        return { id: result.insertId, nombre, ubicacion, horario_apertura, horario_cierre };
+        return { id: result.insertId, name, ubicacion, horario_apertura, horario_cierre, mapa };
     } catch (error) {
         console.error("Error creating animal:", error);
         throw error;
@@ -44,11 +44,11 @@ exports.getZoologicoById = async (id) => {
         throw error;
     }
 };
-exports.updateZoologico = async (id, description, nombre, ubicacion, horario_apertura, horario_cierre, mapa) => {
+exports.updateZoologico = async (id, name, description, ubicacion, horario_apertura, horario_cierre, mapa) => {
     try {
         const [result] = await pool.query(
-            "UPDATE Zoologicos SET nombre = ?, description = ? ,ubicacion = ?, horario_apertura = ?, horario_cierre = ? , mapa = ? WHERE id_zoologico = ?",
-            [nombre, description, ubicacion, horario_apertura, horario_cierre, mapa, id]
+            "UPDATE Zoologicos SET name = ?, description = ? ,ubicacion = ?, horario_apertura = ?, horario_cierre = ? , mapa = ? WHERE id_zoologico = ?",
+            [name, description, ubicacion, horario_apertura, horario_cierre, mapa, id]
         );
         return result.affectedRows > 0;
     } catch (error) {

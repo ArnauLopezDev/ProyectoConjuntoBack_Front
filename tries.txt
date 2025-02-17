@@ -1,3 +1,48 @@
 composer:
 docker-compose down
 docker-compose up --build
+
+
+
+
+Insertar zoo:
+{
+  "name": "Amazon Zoo",
+  "description": "A new zoo located in the Amazon.",
+  "ubicacion": "Amazon Rainforest, Brazil",
+  "horario_apertura": "08:00:00",
+  "horario_cierre": "18:00:00",
+  "mapa": "https://maps.google.com"
+}
+
+Insertar animal:
+{
+  "id": 5,
+  "image": "elephant_image.jpg",
+  "name": "Ellie",
+  "species": "African Elephant",
+  "habitat": "Savanna",
+  "dieta": "Herbivore",
+  "estado_salud": "Healthy",
+  "id_zoologico": 1
+}
+
+Insertar evento:
+{
+  "id": 3,
+  "image": "event_image3.jpg",
+  "name_evento": "Night Safari",
+  "fecha": "2025-05-01",
+  "tiempo": "20:00",
+  "location": "Safari Park",
+  "descripcion": "An exciting safari event at night.",
+  "id_zoologico": 1
+}
+
+Insertar ticket:
+{
+  "id": 3,
+  "fecha_compra": "2025-02-12",
+  "id_usuario": 2,
+  "id_evento": 1
+}
