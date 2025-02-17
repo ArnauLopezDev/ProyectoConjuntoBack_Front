@@ -12,11 +12,9 @@ import HelloWorld from './components/HelloWorld.vue'; /* PartiallyEnd: #3632/scr
       <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/chat">Chat</RouterLink>
         <RouterLink to="/animales">Animales</RouterLink>
-        <RouterLink to="/zoologicos">Zoologicos</RouterLink>
+        <RouterLink to="/zoologicos">Zoologicos Home</RouterLink>
+        <RouterLink to="/auth">Login/Signup</RouterLink>
       </nav>
     </div>
   </header>
