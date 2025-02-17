@@ -23,48 +23,50 @@ export default {
         };
     },
     mounted() {
-        // Guardar el usuario en localStorage
+        // Save the user in localStorage
         localStorage.setItem("chatUser", this.user);
 
-        // Get the room name from the URL
-        const currentRoute = this.$route.name;
-        this.roomName = currentRoute;
-        // switch (currentRoute) {
-        //     case "animales":
-        //         this.roomName = "Animales";
-        //         break;
-        //     case "zoologicos":
-        //         this.roomName = "Zoologicos";
-        //         break;
-        //     case "eventos":
-        //         this.roomName = "Eventos";
-        //         break;
-        //     default:
-        //         this.roomName = "General";
-        // }
+        // Obtain the unique room identifier.
+        // E.g., if the route is /animales/123, use the ID to create a unique room.
+        const animalId = this.$route.params.animalid; // Convertir a String explícitamente
+        console.log("Valor de animalId:", animalId); // Para depuración
+        if (animalId) {
+            this.roomName = `animal-${animalId}`;
+        } else {
+            // If no ID, use the route name or a default value.
+            this.roomName = this.$route.name || "General";
+        }
+        console.log("Sala de chat asignada:", this.roomName);
 
-        // Escuchar mensajes del servidor
+        // Listen for incoming messages and filter them by room.
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            this.messages.push(data);
+            if (data.room === this.roomName) {
+                this.messages.push(data);
+            }
         };
 
-        // Manejar errores del WebSocket
+        // Handle WebSocket errors.
         socket.onerror = (error) => {
             console.error("Error en el WebSocket:", error);
             this.messages.push({ user: "Sistema", text: "Error en la conexión con el servidor." });
         };
+
+        // **Remove the join message here, since Socket.js already sends it.**
+        // const joinMessage = { type: 'join', room: this.roomName, user: this.user };
+        // socket.send(JSON.stringify(joinMessage));
     },
     methods: {
         sendMessage() {
             if (this.message.trim() !== "") {
                 const data = {
+                    type: "message", // Include type to help the server distinguish message types.
                     user: this.user,
                     text: this.message,
                     room: this.roomName,
                 };
 
-                // Enviar mensaje al servidor
+                // Send message to the server.
                 socket.send(JSON.stringify(data));
                 this.message = "";
             }

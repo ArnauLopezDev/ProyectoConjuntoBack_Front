@@ -39,30 +39,54 @@ wss.on('connection', (ws) => {
 
     ws.on('message', (message) => {
         try {
-            const { room, user, text } = JSON.parse(message);
+            const data = JSON.parse(message);
+            const { type, room, user, text } = data;
 
-            if (!room || !user || !text) {
-                console.error('Mensaje inválido recibido');
+            if (type === 'join') {
+                // Solo se procesa el join una vez
+                if (!room || !user) {
+                    console.error('Mensaje join inválido');
+                    return;
+                }
+                ws.room = room;
+                ws.user = user;
+                // Agregar usuario a la sala en Redis
+                redisClient.sadd(`room:${room}:users`, user);
+                console.log(`Usuario ${user} se ha unido a la sala ${room}`);
                 return;
             }
 
-            // Asignar sala y usuario al WebSocket
-            ws.room = room;
-            ws.user = user;
-
-            // Agregar usuario a la sala en Redis
-            redisClient.sadd(`room:${room}:users`, user);
-
-            // Guardar mensaje en Redis
-            const timestamp = new Date();
-            redisClient.rpush(`chat:${room}`, JSON.stringify({ user, text, timestamp }));
-
-            // Enviar mensaje a todos los clientes de la misma sala
-            wss.clients.forEach((client) => {
-                if (client.readyState === WebSocket.OPEN && client.room === room) {
-                    client.send(JSON.stringify({ user, text, timestamp }));
+            if (type === 'message') {
+                // Si el cliente no se ha unido a una sala, ignorar el mensaje
+                if (!ws.room) {
+                    console.error('El cliente no se ha unido a ninguna sala');
+                    return;
                 }
-            });
+                // Opcional: Verificar que el campo room del mensaje coincida con ws.room
+                if (room && room !== ws.room) {
+                    console.error('Mensaje con room diferente al asignado al cliente');
+                    return;
+                }
+
+                if (!text) {
+                    console.error('Mensaje sin texto recibido');
+                    return;
+                }
+
+                const timestamp = new Date();
+                // Guardar mensaje en Redis usando la sala asignada a la conexión
+                redisClient.rpush(`chat:${ws.room}`, JSON.stringify({ user: ws.user, text, timestamp }));
+
+                // Enviar mensaje a todos los clientes de la misma sala
+                wss.clients.forEach((client) => {
+                    if (
+                        client.readyState === WebSocket.OPEN &&
+                        client.room === ws.room
+                    ) {
+                        client.send(JSON.stringify({ room: ws.room, user: ws.user, text, timestamp }));
+                    }
+                });
+            }
         } catch (err) {
             console.error('Error al procesar el mensaje:', err.message);
         }
@@ -70,13 +94,13 @@ wss.on('connection', (ws) => {
 
     ws.on('close', () => {
         console.log('Cliente desconectado');
-
         // Eliminar usuario de la sala en Redis
         if (ws.room && ws.user) {
             redisClient.srem(`room:${ws.room}:users`, ws.user);
         }
     });
 });
+
 
 // Iniciar el servidor HTTP y WebSocket juntos
 server.listen(port, () => {

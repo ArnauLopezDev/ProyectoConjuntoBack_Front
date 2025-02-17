@@ -30,8 +30,9 @@ export default {
         const pathSegments = window.location.pathname.split('/');
         this.roomName = pathSegments[pathSegments.length - 1] || 'default';
 
-        // Send a 'join' message to the WebSocket server to join the room
-        const joinMessage = { type: 'join', room: this.roomName };
+        // Send a 'join' message to the WebSocket server to join the room,
+        // including the user field.
+        const joinMessage = { type: 'join', room: this.roomName, user: this.user };
         socket.send(JSON.stringify(joinMessage));
 
         // Listen for incoming messages from the server
@@ -53,6 +54,7 @@ export default {
         sendMessage() {
             if (this.message.trim() !== "") {
                 const data = {
+                    type: 'message', // Optional but helps differentiate message types on the server
                     user: this.user,
                     text: this.message,
                     room: this.roomName,
@@ -75,42 +77,3 @@ export default {
     },
 };
 </script>
-
-<style>
-.chat-room {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    max-width: 500px;
-    margin: 20px auto;
-    background-color: #f9f9f9;
-}
-
-.messages {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    height: 300px;
-    overflow-y: scroll;
-    margin-bottom: 10px;
-    background-color: #fff;
-}
-
-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
-}
-
-.message {
-    margin-bottom: 10px;
-    color: black;
-}
-</style>

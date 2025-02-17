@@ -61,13 +61,13 @@ exports.getAllAnimals = async () => {
 };
 
 // Create a new animal
-exports.createAnimal = async (name, species, habitat, dieta, estado_salud, id_zoologico) => {
+exports.createAnimal = async (image, name, species, habitat, dieta, estado_salud, id_zoologico) => {
     try {
         const [result] = await pool.query(
-            "INSERT INTO Animales (nombre, especie, habitat, dieta, estado_salud, id_zoologico) VALUES (?, ?, ?, ?, ?, ?)",
-            [name, species, habitat, dieta, estado_salud, id_zoologico]
+            "INSERT INTO Animales (image, name, species, habitat, dieta, estado_salud, id_zoologico) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [image, name, species, habitat, dieta, estado_salud, id_zoologico]
         );
-        return { id: result.insertId, name, species, habitat, dieta, estado_salud, id_zoologico };
+        return { id: result.insertId, image, name, species, habitat, dieta, estado_salud, id_zoologico };
     } catch (error) {
         console.error("Error creating animal:", error);
         throw error;
@@ -86,11 +86,11 @@ exports.getAnimalById = async (id) => {
 };
 
 // Update an animal
-exports.updateAnimal = async (id, name, species, habitat, dieta, estado_salud) => {
+exports.updateAnimal = async (id, image, name, species, habitat, dieta, estado_salud) => {
     try {
         const [result] = await pool.query(
-            "UPDATE Animales SET nombre = ?, especie = ?, habitat = ?, dieta = ?, estado_salud = ? WHERE id_animal = ?",
-            [name, species, habitat, dieta, estado_salud, id]
+            "UPDATE Animales SET image = ?, name = ?, species = ?, habitat = ?, dieta = ?, estado_salud = ? WHERE id_animal = ?",
+            [image, name, species, habitat, dieta, estado_salud, id]
         );
         return result.affectedRows > 0;
     } catch (error) {

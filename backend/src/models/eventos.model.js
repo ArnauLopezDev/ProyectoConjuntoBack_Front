@@ -18,21 +18,21 @@ exports.eventos = {
         const [rows] = await pool.query("SELECT * FROM Eventos");
         return rows;
     },
-    async create(nombre_evento, fecha, descripcion, id_zoologico) {
+    async create(image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico) {
         const [result] = await pool.query(
-            "INSERT INTO Eventos (nombre_evento, fecha, descripcion, id_zoologico) VALUES (?, ?, ?, ?)",
-            [nombre_evento, fecha, descripcion, id_zoologico]
+            "INSERT INTO Eventos (image, nombre_evento, fecha, tiempo, location ,descripcion, id_zoologico) VALUES (?, ?, ?, ?, ?,?,?)",
+            [image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico]
         );
-        return { id: result.insertId, nombre_evento, fecha, descripcion, id_zoologico };
+        return { id: result.insertId, image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico };
     },
     async getById(id) {
         const [rows] = await pool.query("SELECT * FROM Eventos WHERE id_evento = ?", [id]);
         return rows[0] || null;
     },
-    async update(id, nombre_evento, fecha, descripcion, id_zoologico) {
+    async update(id, image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico) {
         const [result] = await pool.query(
-            "UPDATE Eventos SET nombre_evento = ?, fecha = ?, descripcion = ?, id_zoologico = ? WHERE id_evento = ?",
-            [nombre_evento, fecha, descripcion, id_zoologico, id]
+            "UPDATE Eventos SET image=?, nombre_evento = ?, fecha = ?, tiempo = ?, location = ?, descripcion = ?, id_zoologico = ? WHERE id_evento = ?",
+            [image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico, id]
         );
         return result.affectedRows > 0;
     },

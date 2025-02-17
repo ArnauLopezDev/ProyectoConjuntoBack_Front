@@ -6,9 +6,9 @@
         <div v-if="!loading && !error && animal" class="animal-content">
             <h1>{{ animal.name }}</h1>
             <div class="details-container">
-                <img v-if="animal.image" :src="animal.image" :alt="animal.name" class="animal-image" />
+                <img v-if="animal.image" :src="getImageUrl(animal.image)" :alt="animal.name" class="animal-thumbnail" />
                 <div class="animal-info">
-                    <p><strong>Species:</strong> {{ animal.specie }}</p>
+                    <p><strong>Species:</strong> {{ animal.species }}</p>
                     <!-- <p><strong>Breed:</strong> {{ animal.breed }}</p>
                     <p><strong>Age:</strong> {{ animal.age }}</p>
                     <p><strong>Description:</strong> {{ animal.description }}</p>
@@ -32,6 +32,9 @@ const animal = ref(null);
 const loading = ref(true);
 const error = ref(null);
 const props = defineProps(["animalid"]);
+const getImageUrl = (image) => {
+    return new URL(`../img/${image}`, import.meta.url).href;
+};
 async function fetchAnimal() {
     try {
         const response = await api.get(`/animals/  ${props.animalid}`);

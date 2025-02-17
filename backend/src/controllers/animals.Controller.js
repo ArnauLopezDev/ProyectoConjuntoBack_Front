@@ -10,9 +10,9 @@ exports.getAnimals = async (req, res) => {
 };
 
 exports.createAnimal = async (req, res) => {
-    const { nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
+    const { image, nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
     try {
-        const newAnimal = await animalModel.createAnimal(nombre, especie, habitat, dieta, estado_salud, id_zoologico);
+        const newAnimal = await animalModel.createAnimal(image, nombre, especie, habitat, dieta, estado_salud, id_zoologico);
         res.status(201).json(newAnimal);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el animal', error });
@@ -32,10 +32,11 @@ exports.getAnimalById = async (req, res) => {
 };
 
 exports.updateAnimal = async (req, res) => {
-    const { nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
+    const { image, nombre, especie, habitat, dieta, estado_salud, id_zoologico } = req.body;
     try {
         const success = await animalModel.update(
             parseInt(req.params.id),
+            image,
             nombre,
             especie,
             habitat,

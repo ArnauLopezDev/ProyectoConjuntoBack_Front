@@ -10,14 +10,14 @@
                     <h2>Descripción:</h2>
                     <p>{{ zoologico.description }}</p>
                     <br>
-                    <h2>Servicios:</h2>
-                    <p>{{ zoologico.services }}</p>
+                    <!-- <h2>Servicios:</h2>
+                    <p>{{ zoologico.services }}</p> -->
                     <br>
                     <h2>Animales:</h2>
                     <AnimalsListView :zoologicoid="props.zoologicoid" />
                     <br>
                     <h2>Horarios:</h2>
-                    <p>{{ zoologico.horarios }}</p>
+                    <p>{{ zoologico.horario_apertura }} hasta {{ zoologico.horario_cierre }}</p>
                     <br>
                     <h2>Entradas:</h2>
                     <p>{{ zoologico.entradas }}</p>

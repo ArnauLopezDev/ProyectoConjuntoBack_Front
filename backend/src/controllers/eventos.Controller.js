@@ -10,9 +10,9 @@ exports.getEventos = async (req, res) => {
 };
 
 exports.createEvento = async (req, res) => {
-    const { nombre_evento, fecha, descripcion, id_zoologico } = req.body;
+    const { image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico } = req.body;
     try {
-        const newEvento = await eventoModel.eventos.create(nombre_evento, fecha, descripcion, id_zoologico);
+        const newEvento = await eventoModel.eventos.create(image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico);
         res.status(201).json(newEvento);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el evento', error });
@@ -32,12 +32,15 @@ exports.getEventoById = async (req, res) => {
 };
 
 exports.updateEvento = async (req, res) => {
-    const { nombre_evento, fecha, descripcion, id_zoologico } = req.body;
+    const { image, nombre_evento, fecha, tiempo, location, descripcion, id_zoologico } = req.body;
     try {
         const success = await eventoModel.eventos.update(
             parseInt(req.params.id),
+            image,
             nombre_evento,
             fecha,
+            tiempo,
+            location,
             descripcion,
             id_zoologico
         );

@@ -6,12 +6,17 @@ onMounted(async () => {
 
     console.log(props.animal);
 })
+const getImageUrl = (image) => {
+    return new URL(`../img/${image}`, import.meta.url).href;
+};
+
 </script>
 
 <template>
     <div class="animal-card">
         <h3>{{ props.animal.name }}</h3>
-        <img v-if="props.animal.image" :src="props.animal.image" :alt="props.animal.name" class="animal-thumbnail" />
+        <img v-if="props.animal.image" :src="getImageUrl(props.animal.image)" :alt="props.animal.name"
+            class="animal-thumbnail" />
         <p>Especie: {{ props.animal.species }}</p>
         <p>Habitat: {{ props.animal.habitat }}</p>
         <p>Estado de salud: {{ props.animal.estado_salud }}</p>

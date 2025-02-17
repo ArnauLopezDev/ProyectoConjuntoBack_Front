@@ -1,71 +1,57 @@
-// Get room ID from URL path (e.g., /chat/room123)
-const getRoomId = () => {
+// Obtén el ID del animal de la URL (por ejemplo, "123")
+const getAnimalId = () => {
     const pathSegments = window.location.pathname.split('/');
     return pathSegments[pathSegments.length - 1] || 'default';
 };
-const roomId = getRoomId();
+
+// Define un roomId único para cada animal, ej. "animal-123"
+const roomId = `animal-${getAnimalId()}`;
 
 // Get WebSocket URL dynamically
-const socketUrl = import.meta.env.VITE_SOCKET_URL || "ws://localhost:3000/chat";
+const socketUrl = roomId ? `ws://localhost:3000/${roomId}` : "ws://localhost:3000/chat";
 
-// Connect to WebSocket server
-const socket = new WebSocket(socketUrl);
+let pendingMessages = [];
+let socket;
 
-// Connection opened
-socket.onopen = () => {
-    console.log("Conectado al servidor WebSocket");
+// Obtener el usuario (por ejemplo, desde localStorage)
+const user = localStorage.getItem("chatUser") || `Usuario_${Math.floor(Math.random() * 1000)}`;
 
-    // Send join room message
-    const joinMessage = {
-        type: 'join',
-        room: roomId
-    };
-    socket.send(JSON.stringify(joinMessage));
-};
+const connectWebSocket = () => {
+    socket = new WebSocket(socketUrl);
 
-// Handle incoming messages
-socket.onmessage = (event) => {
-    try {
-        const data = JSON.parse(event.data);
-        console.log("Mensaje recibido:", data);
-
-        // Handle different message types
-        if (data.type === 'message' && data.user && data.text) {
-            console.log(`[${data.user} en ${data.room}]: ${data.text}`);
-            // Add to UI or handle as needed
+    socket.onopen = () => {
+        console.log("Conectado al servidor WebSocket");
+        // Envía mensaje de "join" con el roomId único y el usuario
+        socket.send(JSON.stringify({ type: "join", room: roomId, user: user }));
+        console.log("Sala de chat:", roomId);
+        console.log("WebSocket reconectado. Enviando mensajes pendientes...");
+        while (pendingMessages.length > 0) {
+            socket.send(JSON.stringify(pendingMessages.shift()));
         }
-    } catch (error) {
-        console.error("Error procesando mensaje:", error.message);
-    }
+    };
+
+    socket.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            console.log("Mensaje recibido:", data);
+        } catch (error) {
+            console.error("Error procesando mensaje:", error.message);
+        }
+    };
+
+    socket.onclose = () => {
+        console.log("Conexión cerrada. Intentando reconectar en 3 segundos...");
+        setTimeout(connectWebSocket, 3000);
+    };
+
+    socket.onerror = (error) => {
+        console.error("Error de WebSocket:", error);
+    };
+
+    return socket;
 };
 
-// Handle connection close
-socket.onclose = () => {
-    console.log("Conexión cerrada. Reconectando...");
-    setTimeout(() => {
-        window.location.reload(); // Or implement reconnection logic
-    }, 3000); // 3 seconds delay
-};
-
-// Handle errors
-socket.onerror = (error) => {
-    console.error("Error de WebSocket:", error);
-};
-
-// Send message function with room inclusion
-const sendMessage = (user, text) => {
-    if (socket.readyState === WebSocket.OPEN) {
-        const message = {
-            type: 'message',
-            room: roomId,
-            user: user,
-            text: text
-        };
-        socket.send(JSON.stringify(message));
-    } else {
-        console.error("WebSocket no conectado. Mensaje no enviado.");
-    }
-};
+// Crear el WebSocket por primera vez
+socket = connectWebSocket();
 
 export default socket;
-export { sendMessage, socket };

@@ -23,11 +23,11 @@ exports.getAllZooos = async () => {
         throw error;
     }
 };
-exports.createZoologico = async (nombre, ubicacion, horario_apertura, horario_cierre) => {
+exports.createZoologico = async (nombre, description, ubicacion, horario_apertura, horario_cierre, mapa) => {
     try {
         const [result] = await pool.query(
-            "INSERT INTO Zoologicos (nombre, ubicacion, horario_apertura, horario_cierre) VALUES (?, ?, ?, ?)",
-            [nombre, ubicacion, horario_apertura, horario_cierre]
+            "INSERT INTO Zoologicos (nombre, description ,ubicacion, horario_apertura, horario_cierre, mapa) VALUES (?, ?,?, ?, ?, ?)",
+            [nombre, description, ubicacion, horario_apertura, horario_cierre, mapa]
         );
         return { id: result.insertId, nombre, ubicacion, horario_apertura, horario_cierre };
     } catch (error) {
@@ -44,11 +44,11 @@ exports.getZoologicoById = async (id) => {
         throw error;
     }
 };
-exports.updateZoologico = async (id, nombre, ubicacion, horario_apertura, horario_cierre) => {
+exports.updateZoologico = async (id, description, nombre, ubicacion, horario_apertura, horario_cierre, mapa) => {
     try {
         const [result] = await pool.query(
-            "UPDATE Zoologicos SET nombre = ?, ubicacion = ?, horario_apertura = ?, horario_cierre = ? WHERE id_zoologico = ?",
-            [nombre, ubicacion, horario_apertura, horario_cierre, id]
+            "UPDATE Zoologicos SET nombre = ?, description = ? ,ubicacion = ?, horario_apertura = ?, horario_cierre = ? , mapa = ? WHERE id_zoologico = ?",
+            [nombre, description, ubicacion, horario_apertura, horario_cierre, mapa, id]
         );
         return result.affectedRows > 0;
     } catch (error) {
