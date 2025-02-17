@@ -1,4 +1,3 @@
-<!-- src/components/AnimalDetail.vue -->
 <template>
     <div class="animal-detail">
         <div v-if="loading" class="loading">Loading animal details...</div>
@@ -9,12 +8,8 @@
                 <img v-if="animal.image" :src="getImageUrl(animal.image)" :alt="animal.name" class="animal-thumbnail" />
                 <div class="animal-info">
                     <p><strong>Species:</strong> {{ animal.species }}</p>
-                    <!-- <p><strong>Breed:</strong> {{ animal.breed }}</p>
-                    <p><strong>Age:</strong> {{ animal.age }}</p>
-                    <p><strong>Description:</strong> {{ animal.description }}</p>
-                    <p><strong>Status:</strong> {{ animal.status }}</p> -->
-                    <p><strong>habitat:</strong> {{ animal.habitat }}</p>
-                    <p><strong>dieta:</strong> {{ animal.dieta }}</p>
+                    <p><strong>Habitat:</strong> {{ animal.habitat }}</p>
+                    <p><strong>Dieta:</strong> {{ animal.dieta }}</p>
                 </div>
             </div>
         </div>
@@ -27,17 +22,20 @@ import Chatroom from '@/components/Chatroom.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '../services/api';
+
 const route = useRoute();
 const animal = ref(null);
 const loading = ref(true);
 const error = ref(null);
 const props = defineProps(["animalid"]);
+
 const getImageUrl = (image) => {
     return new URL(`../img/${image}`, import.meta.url).href;
 };
+
 async function fetchAnimal() {
     try {
-        const response = await api.get(`/animals/  ${props.animalid}`);
+        const response = await api.get(`/animals/${props.animalid}`);
         animal.value = response.data;
         console.log(response.data);
     } catch (err) {
@@ -49,68 +47,112 @@ async function fetchAnimal() {
 
 onMounted(async () => {
     await fetchAnimal();
-    // Listen for updates specific to this animal
-    // const eventName = `animal-update-${route.params.id}`;
-    // socket.on(eventName, (updatedAnimal) => {
-    //     animal.value = updatedAnimal;
-    // });
 });
-
-// onBeforeUnmount(() => {
-//     const eventName = `animal-update-${route.params.id}`;
-//     socket.off(eventName);
-// });
 </script>
 
 <style scoped>
 .animal-detail {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1500px;
+    margin: 2rem auto;
+    background: var(--zoo-sand);
+    /* A warm, sandy tone */
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--zoo-brown);
+    position: relative;
+    overflow: hidden;
 }
 
 .animal-content {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
 }
 
+/* Title styling with a decorative underline */
+.animal-detail h1 {
+    font-family: 'WildWest', cursive;
+    color: var(--zoo-green);
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.animal-detail h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 4px;
+    background: var(--zoo-sun);
+    border-radius: 2px;
+}
+
+/* Layout: stack on small screens; side-by-side on larger ones */
 .details-container {
-    display: flex;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
     margin-top: 20px;
 }
 
+@media (min-width: 768px) {
+    .details-container {
+        flex-direction: row;
+        gap: 2.5rem;
+    }
+}
+
+/* Image styling with a subtle hover effect */
 .animal-thumbnail {
+    width: 100%;
     max-width: 500px;
     max-height: 500px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 15px;
+    border: 3px solid var(--zoo-brown);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
+.animal-thumbnail:hover {
+    transform: scale(1.02);
+}
+
+/* Information styling with a colored border accent */
 .animal-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .animal-info p {
-    font-size: 18px;
+    font-size: 1.2rem;
     line-height: 1.6;
+    color: var(--zoo-brown);
+    background: rgba(244, 231, 211, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--zoo-sun);
 }
 
+/* Loading and error messages styled consistently */
 .loading,
 .error {
-    padding: 20px;
     text-align: center;
-    font-size: 18px;
-}
-
-h1 {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 20px;
+    font-size: 1.3rem;
+    padding: 2.5rem;
+    color: var(--zoo-brown);
+    background: rgba(244, 231, 211, 0.9);
+    border-radius: 15px;
+    margin: 3rem auto;
+    max-width: 550px;
+    border: 2px dashed var(--zoo-brown);
+    backdrop-filter: blur(4px);
 }
 </style>

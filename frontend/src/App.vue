@@ -1,89 +1,206 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue'; /* PartiallyEnd: #3632/scriptSetup.vue */
-
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
+      <HelloWorld msg="Welcome to Zoo Explorer" />
       <nav>
         <RouterLink to="/animales">Animales</RouterLink>
-        <RouterLink to="/zoologicos">Zoologicos</RouterLink>
-        <RouterLink to="auth">Login/Singnup</RouterLink>
-
-
+        <RouterLink to="/zoologicos">Zoológicos</RouterLink>
+        <RouterLink to="/auth">Login/Registro</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <main class="main-content">
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>
+:root {
+  --header-height: 120px;
+  --header-pattern-height: 20px;
+}
+
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  height: var(--header-height);
+  background: var(--zoo-green);
+  padding: 0.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  border-bottom: 3px solid var(--zoo-brown);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  max-height: 80px;
+  max-width: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--zoo-sun);
+  padding: 4px;
+  background: var(--zoo-sand);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: rotate(15deg) scale(1.1);
+  box-shadow: 0 0 20px rgba(245, 166, 35, 0.4);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
 }
 
 nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  position: relative;
+  padding-right: 1rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+nav::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 3px;
+  background: linear-gradient(to bottom,
+      transparent,
+      var(--zoo-sun),
+      transparent);
 }
 
 nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  font-family: 'WildWest', cursive;
+  color: var(--zoo-sand);
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-nav a:first-of-type {
-  border: 0;
+nav a:hover {
+  color: var(--zoo-green);
+  background: var(--zoo-sun);
+  transform: translateY(-2px);
+}
+
+nav a.router-link-active {
+  background: var(--zoo-brown);
+  color: var(--zoo-sand);
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.main-content {
+  padding-top: calc(var(--header-height) + var(--header-pattern-height) + 20px);
+  min-height: 100vh;
+  background-image:
+    linear-gradient(to bottom, var(--zoo-sky), var(--zoo-sand) 60%),
+    url('data:image/svg+xml,<svg ...>/* subtle paw pattern */</svg>');
+  background-blend-mode: soft-light;
+}
+
+/* Animal track border */
+header::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * var(--header-pattern-height));
+  left: 0;
+  width: 100%;
+  height: var(--header-pattern-height);
+  background-image: url('data:image/svg+xml,<svg ...>/* animal track pattern */</svg>');
+  background-repeat: repeat-x;
+  opacity: 0.8;
 }
 
 @media (min-width: 1024px) {
+  :root {
+    --header-height: 140px;
+  }
+
   header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    padding: 0 4rem;
   }
 
   .logo {
-    margin: 0 2rem 0 0;
+    max-height: 100px;
+    max-width: 100px;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .wrapper {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
   }
 
   nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+    gap: 2.5rem;
+    padding-right: 0;
+  }
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+  nav a {
+    font-size: 1.25rem;
+    padding: 1rem 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0 1rem;
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .logo {
+    max-height: 60px;
+    margin-bottom: 1rem;
+  }
+
+  .wrapper {
+    width: 100%;
+    align-items: center;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 0;
+    gap: 1rem;
+  }
+
+  nav::after {
+    display: none;
+  }
+
+  .main-content {
+    padding-top: 180px;
+  }
+}
+
+@keyframes header-scroll {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100%);
   }
 }
 </style>

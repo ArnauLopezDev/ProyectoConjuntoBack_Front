@@ -15,11 +15,9 @@
             </div>
         </div>
     </div>
-    <Chatroom></Chatroom>
 </template>
 
 <script setup>
-import Chatroom from '@/components/Chatroom.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '../services/api';
@@ -55,7 +53,8 @@ onMounted(async () => {
     margin: 0 auto;
 }
 
-.loading, .error {
+.loading,
+.error {
     text-align: center;
     font-size: 18px;
     margin-top: 20px;
@@ -99,5 +98,4 @@ onMounted(async () => {
 .event-info p strong {
     color: #333;
 }
-
 </style>

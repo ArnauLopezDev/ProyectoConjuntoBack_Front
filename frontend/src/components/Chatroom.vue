@@ -18,7 +18,9 @@ export default {
         return {
             message: "",
             messages: [],
-            user: localStorage.getItem("chatUser") || "Usuario_" + Math.floor(Math.random() * 1000),
+            user:
+                localStorage.getItem("chatUser") ||
+                "Usuario_" + Math.floor(Math.random() * 1000),
             roomName: "",
         };
     },
@@ -28,8 +30,8 @@ export default {
 
         // Obtain the unique room identifier.
         // E.g., if the route is /animales/123, use the ID to create a unique room.
-        const animalId = this.$route.params.animalid; // Convertir a String explícitamente
-        console.log("Valor de animalId:", animalId); // Para depuración
+        const animalId = this.$route.params.animalid;
+        console.log("Valor de animalId:", animalId);
         if (animalId) {
             this.roomName = `animal-${animalId}`;
         } else {
@@ -49,18 +51,19 @@ export default {
         // Handle WebSocket errors.
         socket.onerror = (error) => {
             console.error("Error en el WebSocket:", error);
-            this.messages.push({ user: "Sistema", text: "Error en la conexión con el servidor." });
+            this.messages.push({
+                user: "Sistema",
+                text: "Error en la conexión con el servidor.",
+            });
         };
 
-        // **Remove the join message here, since Socket.js already sends it.**
-        // const joinMessage = { type: 'join', room: this.roomName, user: this.user };
-        // socket.send(JSON.stringify(joinMessage));
+        // **No join message is sent here as Socket.js already handles it.**
     },
     methods: {
         sendMessage() {
             if (this.message.trim() !== "") {
                 const data = {
-                    type: "message", // Include type to help the server distinguish message types.
+                    type: "message", // Helps the server distinguish message types.
                     user: this.user,
                     text: this.message,
                     room: this.roomName,
@@ -85,46 +88,82 @@ export default {
 </script>
 
 <style scoped>
+/* Container with a warm, sandy background and earthy borders */
 .chat-room {
     max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--zoo-sand, #f9f4e8);
+    /* fallback color if variable not set */
+    border: 3px solid var(--zoo-brown, #8b5e3c);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
+/* Title styling with a decorative underline */
 .chat-room h2 {
+    font-family: "WildWest", cursive;
+    color: var(--zoo-green, #2e7d32);
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    position: relative;
 }
 
+.chat-room h2::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--zoo-sun, #fdd835);
+    border-radius: 2px;
+}
+
+/* Messages container with a soft, semi-transparent background */
 .messages {
     max-height: 300px;
     overflow-y: auto;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 1rem;
+    border: 1px solid var(--zoo-brown, #8b5e3c);
     border-radius: 10px;
-    background-color: white;
+    background: rgba(244, 231, 211, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
+/* Individual message styling */
 .message {
-    margin-bottom: 10px;
+    background: #fff;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--zoo-sun, #fdd835);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--zoo-brown, #8b5e3c);
 }
 
 .message strong {
-    color: #333;
+    color: var(--zoo-green, #2e7d32);
 }
 
+/* Input field styling with smooth focus transitions */
 input[type="text"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--zoo-brown, #8b5e3c);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--zoo-brown, #8b5e3c);
+    background: var(--color-background-soft, #fff);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]::placeholder {
@@ -133,7 +172,22 @@ input[type="text"]::placeholder {
 
 input[type="text"]:focus {
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    border-color: var(--zoo-green, #2e7d32);
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+}
+
+/* Custom scrollbar for the messages container */
+.messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: var(--zoo-brown, #8b5e3c);
+    border-radius: 10px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: rgba(244, 231, 211, 0.3);
+    border-radius: 10px;
 }
 </style>
