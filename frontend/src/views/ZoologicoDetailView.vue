@@ -10,14 +10,14 @@
                     <h2>Descripción:</h2>
                     <p>{{ zoologico.description }}</p>
                     <br>
-                    <!-- <h2>Servicios:</h2>
-                    <p>{{ zoologico.services }}</p> -->
+                    <h2>Servicios:</h2>
+                    <p>{{ zoologico.services }}</p>
                     <br>
                     <h2>Animales:</h2>
                     <AnimalsListView :zoologicoid="props.zoologicoid" />
                     <br>
                     <h2>Horarios:</h2>
-                    <p>{{ zoologico.horario_apertura }} hasta {{ zoologico.horario_cierre }}</p>
+                    <p>{{ zoologico.horarios }}</p>
                     <br>
                     <h2>Entradas:</h2>
                     <p>{{ zoologico.entradas }}</p>
@@ -78,3 +78,79 @@ onMounted(() => {
     // fetchEventswithIdZoo();
 });
 </script>
+<style scoped>
+.zoologico-detail-view {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.zoologico-content {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.zoologico-content h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.zoologico-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.zoologico-info {
+    width: 100%;
+}
+
+.zoologico-info h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.zoologico-info p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.zoologico-info iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.comentarios-container {
+    margin-top: 30px;
+}
+
+.comentarios-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+</style>

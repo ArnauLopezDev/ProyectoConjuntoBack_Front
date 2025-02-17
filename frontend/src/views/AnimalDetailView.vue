@@ -63,8 +63,18 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.animal-detail {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .animal-content {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -75,7 +85,7 @@ onMounted(async () => {
     margin-top: 20px;
 }
 
-.animal-image {
+.animal-thumbnail {
     max-width: 500px;
     max-height: 500px;
     object-fit: cover;
@@ -86,9 +96,21 @@ onMounted(async () => {
     flex: 1;
 }
 
+.animal-info p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
 .loading,
 .error {
     padding: 20px;
     text-align: center;
+    font-size: 18px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 20px;
 }
 </style>
