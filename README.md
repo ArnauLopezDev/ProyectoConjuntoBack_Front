@@ -6,7 +6,7 @@ docker-compose up --build
 ```
 
 ## Caso de descarga ZIP
-Moverse a la carpeta donde se encuentran tanto la carpeta de frontend y backend y ejectutar:
+Moverse al directorio donde se encuentran tanto el directorio de frontend como el de backend y ejectutar:
 docker-compose up --build
 ```bash
 cd ArnauLopez_ProyectoConjuntoBack_Front
