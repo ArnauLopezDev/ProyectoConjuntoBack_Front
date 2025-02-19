@@ -59,7 +59,8 @@ const getImageUrl = (image) => {
 
 .animal-thumbnail {
     max-width: 100%;
-    height: auto;
+    height: 500px;
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 20px;
 }

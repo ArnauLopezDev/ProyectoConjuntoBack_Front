@@ -45,7 +45,7 @@ onMounted(fetchAnimals);
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-
+    margin-top: 4rem
 }
 
 h1 {
@@ -71,7 +71,7 @@ h1::after {
 
 .animal-grid {
     display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
     padding: 20px;
 }

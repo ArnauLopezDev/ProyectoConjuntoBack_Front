@@ -55,12 +55,12 @@ onMounted(async () => {
     max-width: 1500px;
     margin: 2rem auto;
     background: var(--zoo-sand);
-    /* A warm, sandy tone */
     border-radius: 20px;
     padding: 2.5rem;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     border: 3px solid var(--zoo-brown);
     position: relative;
+    margin-top: 5rem;
     overflow: hidden;
 }
 
