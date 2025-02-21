@@ -1,10 +1,12 @@
 <template>
   <header>
-    <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    <RouterLink to="/">" <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    </RouterLink>
 
     <div class="wrapper">
       <HelloWorld msg="Welcome to Zoo Explorer" />
       <nav>
+        <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/animales">Animales</RouterLink>
         <RouterLink to="/zoologicos">Zoológicos</RouterLink>
         <RouterLink to="/auth">Login/Registro</RouterLink>
@@ -25,7 +27,7 @@
 
 header {
   height: var(--header-height);
-  background: var(--zoo-green);
+  background: rgba(0, 128, 0, 0.6);
   padding: 0.5rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   border-bottom: 3px solid var(--zoo-brown);
@@ -38,7 +40,11 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s ease;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
+
 
 .logo {
   max-height: 80px;
@@ -79,8 +85,6 @@ nav::after {
   height: 60%;
   width: 3px;
   background: linear-gradient(to bottom,
-      transparent,
-      var(--zoo-sun),
       transparent);
 }
 
@@ -108,12 +112,13 @@ nav a.router-link-active {
 }
 
 .main-content {
-  padding-top: calc(var(--header-height) + var(--header-pattern-height) + 20px);
-  min-height: 100vh;
-  background-image:
-    linear-gradient(to bottom, var(--zoo-sky), var(--zoo-sand) 60%),
-    url('data:image/svg+xml,<svg ...>/* subtle paw pattern */</svg>');
+  padding-top: 5vh;
+  min-height: calc(100vh - var(--header-height));
+  height: 100%;
   background-blend-mode: soft-light;
+  margin: 0 auto;
+  margin-top: 5rem;
+
 }
 
 /* Animal track border */
@@ -189,9 +194,7 @@ header::after {
     display: none;
   }
 
-  .main-content {
-    padding-top: 180px;
-  }
+
 }
 
 @keyframes header-scroll {

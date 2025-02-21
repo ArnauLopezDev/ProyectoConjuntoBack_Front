@@ -1,10 +1,11 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
   font-weight: normal;
+  background-image:
+    linear-gradient(to bottom, var(--zoo-sky), var(--zoo-sand) 60%),
+    url('data:image/svg+xml,<svg ...>/* subtle paw pattern */</svg>');
 }
 
 a,
