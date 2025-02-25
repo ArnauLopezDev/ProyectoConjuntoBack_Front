@@ -44,19 +44,12 @@ onMounted(() => {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: #fff;
+    margin: 20px auto;
 }
 
 .zoologico-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.zoologico-card:nth-child(even) {
-    justify-self: start;
-}
-
-.zoologico-card:nth-child(odd) {
-    justify-self: end;
 }
 
 .zoologico-card h2 {

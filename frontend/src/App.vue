@@ -1,12 +1,15 @@
 <template>
   <header>
+<<<<<<< HEAD
     <RouterLink to="/">
       <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     </RouterLink>
+=======
+    <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+>>>>>>> parent of ed2519f (Updated styles for all the page)
 
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/animales">Animales</RouterLink>
         <RouterLink to="/zoologicos">Zoológicos</RouterLink>
         <RouterLink to="/auth">Login/Registro</RouterLink>
@@ -53,7 +56,7 @@ export default {
 
 header {
   height: var(--header-height);
-  background: rgba(0, 128, 0, 0.6);
+  background: var(--zoo-green);
   padding: 0.5rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   border-bottom: 3px solid var(--zoo-brown);
@@ -66,8 +69,11 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s ease;
+<<<<<<< HEAD
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+=======
+>>>>>>> parent of ed2519f (Updated styles for all the page)
 }
 
 .logo {
@@ -108,7 +114,14 @@ nav::after {
   transform: translateY(-50%);
   height: 60%;
   width: 3px;
+<<<<<<< HEAD
   background: linear-gradient(to bottom, transparent);
+=======
+  background: linear-gradient(to bottom,
+      transparent,
+      var(--zoo-sun),
+      transparent);
+>>>>>>> parent of ed2519f (Updated styles for all the page)
 }
 
 nav a {
@@ -135,12 +148,17 @@ nav a.router-link-active {
 }
 
 .main-content {
-  padding-top: 5vh;
-  min-height: calc(100vh - var(--header-height));
-  height: 100%;
+  padding-top: calc(var(--header-height) + var(--header-pattern-height) + 20px);
+  min-height: 100vh;
+  background-image:
+    linear-gradient(to bottom, var(--zoo-sky), var(--zoo-sand) 60%),
+    url('data:image/svg+xml,<svg ...>/* subtle paw pattern */</svg>');
   background-blend-mode: soft-light;
+<<<<<<< HEAD
   margin: 0 auto;
   margin-top: 5rem;
+=======
+>>>>>>> parent of ed2519f (Updated styles for all the page)
 }
 
 header::after {
@@ -214,6 +232,13 @@ header::after {
   nav::after {
     display: none;
   }
+<<<<<<< HEAD
+=======
+
+  .main-content {
+    padding-top: 180px;
+  }
+>>>>>>> parent of ed2519f (Updated styles for all the page)
 }
 
 @keyframes header-scroll {

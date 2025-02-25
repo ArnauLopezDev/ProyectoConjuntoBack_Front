@@ -124,7 +124,7 @@ onMounted(async () => {
 
 <style scoped>
 .animal-detail {
-    max-width: 80vw;
+    max-width: 1500px;
     margin: 2rem auto;
     background: var(--zoo-sand);
     border-radius: 20px;
@@ -132,11 +132,12 @@ onMounted(async () => {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     border: 3px solid var(--zoo-brown);
     position: relative;
+    margin-top: 5rem;
     overflow: hidden;
 }
 
 .animal-content {
-    max-width: 50vw;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -161,17 +162,17 @@ onMounted(async () => {
     height: 4px;
     background: var(--zoo-sun);
     border-radius: 2px;
-
 }
 
 /* Layout: stack on small screens; side-by-side on larger ones */
 .details-container {
-    display: flex;
-    gap: 10vh;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 20px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .details-container {
         flex-direction: row;
         gap: 2.5rem;
@@ -181,14 +182,13 @@ onMounted(async () => {
 /* Image styling with a subtle hover effect */
 .animal-thumbnail {
     width: 100%;
-    max-width: 40vw;
-    max-height: 50vh;
+    max-width: 500px;
+    max-height: 500px;
     object-fit: cover;
     border-radius: 15px;
     border: 3px solid var(--zoo-brown);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    margin: 0 auto;
 }
 
 .animal-thumbnail:hover {

@@ -76,12 +76,14 @@ const toggleAuth = () => {
 
 <style scoped>
 .auth-container {
-    max-width: 40vw;
+    max-width: 400px;
     margin: 80px auto;
     padding: 40px;
     border-radius: 12px;
     background-color: #fff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    /* Center text in the container’s heading area */
     text-align: center;
 }
 
@@ -96,7 +98,9 @@ const toggleAuth = () => {
     display: flex;
     flex-direction: column;
     margin-top: 1.5rem;
-
+    /* If you want the labels/inputs left-aligned, remove the line below:
+       text-align: left;
+    */
 }
 
 /* Group each label and input for cleaner spacing */
@@ -123,7 +127,7 @@ const toggleAuth = () => {
 
 .form-group input:focus {
     outline: none;
-    border-color: #4caf4fc9;
+    border-color: #007bff;
 }
 
 /* Primary button (submit) */
@@ -135,14 +139,14 @@ const toggleAuth = () => {
     font-weight: 600;
     border: none;
     border-radius: 8px;
-    background: #4CAF50;
+    background: #007bff;
     color: #fff;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
 .auth-form button[type="submit"]:hover {
-    background: #38973b;
+    background: #0056b3;
 }
 
 /* The toggle button for switching forms */
@@ -150,14 +154,14 @@ const toggleAuth = () => {
     margin-top: 1.5rem;
     background: transparent;
     border: none;
-    color: #4CAF50;
+    color: #007bff;
     cursor: pointer;
     text-decoration: underline;
     font-size: 0.9rem;
 }
 
 .toggle-auth:hover {
-    color: #38973b;
+    color: #0056b3;
 }
 
 /* Error message styling */

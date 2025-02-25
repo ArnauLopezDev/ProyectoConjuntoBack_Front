@@ -80,9 +80,10 @@ onMounted(() => {
 <style scoped>
 .zoologico-detail-view {
     max-width: 1400px;
-    width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 2rem;
+    background: var(--zoo-sand);
+    min-height: 100vh;
 }
 
 .loading,
@@ -100,9 +101,11 @@ onMounted(() => {
 }
 
 .zoologico-content {
+
     border-radius: 20px;
     padding: 2.5rem;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--zoo-brown);
     position: relative;
     overflow: hidden;
 }
@@ -129,6 +132,11 @@ onMounted(() => {
     border-radius: 2px;
 }
 
+.details-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
 
 .zoologico-image {
     width: 100%;

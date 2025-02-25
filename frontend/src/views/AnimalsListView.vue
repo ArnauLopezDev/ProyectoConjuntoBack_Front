@@ -43,20 +43,19 @@ onMounted(fetchAnimals);
 <style scoped>
 .animals-list {
     max-width: 1400px;
-    width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 20px;
+    margin-top: 4rem
 }
 
 h1 {
     text-align: center;
     font-family: 'WildWest', cursive;
     color: var(--zoo-green);
-    font-size: 2.8rem;
-    margin: 2rem 0 3rem;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     position: relative;
-    padding-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 1rem;
 }
 
 h1::after {
@@ -65,10 +64,9 @@ h1::after {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
-    height: 4px;
+    width: 120px;
+    height: 3px;
     background: var(--zoo-sun);
-    border-radius: 2px;
 }
 
 .animal-grid {

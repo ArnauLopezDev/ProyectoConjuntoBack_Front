@@ -37,9 +37,9 @@ onMounted(async () => {
 <style scoped>
 .zoologico-list {
     max-width: 1400px;
-    width: 100%;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
 }
 
 h1 {
@@ -66,16 +66,17 @@ h1::after {
 }
 
 .zoologico-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5vw;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
     padding: 25px;
-
+    justify-content: center;
 }
 
 .zoologico-card {
-    min-width: 30vw;
-    max-width: 42vw;
+    flex: 1 1 320px;
+    min-width: 300px;
+    max-width: 420px;
     background: var(--zoo-sand);
     border-radius: 18px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
@@ -84,7 +85,7 @@ h1::after {
     border: 3px solid var(--zoo-brown);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 25px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .zoologico-card:hover {
