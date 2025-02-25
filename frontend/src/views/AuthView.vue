@@ -47,7 +47,7 @@ const handleSubmit = async () => {
     try {
         if (isLogin.value) {
             // Login request
-            const response = await api.post('auth/login', {
+            const response = await api.post('/auth/login', {
                 email: form.value.email,
                 contrasena: form.value.password
             });

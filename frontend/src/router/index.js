@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,10 +75,18 @@ const router = createRouter({
     },
     {
       path: "/admin",
-      name: "admin",
-      component: () => import("../views/AboutView.vue"),
+      name: "AdminPanel",
+      component: () => import("../views/AdminPanel.vue"),
     },
   ],
-})
-
+});
+router.beforeEach((to, from, next) => {
+  if (to.name === 'AdminPanel') {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return next({ name: 'Home' });
+    }
+  }
+  next();
+});
 export default router

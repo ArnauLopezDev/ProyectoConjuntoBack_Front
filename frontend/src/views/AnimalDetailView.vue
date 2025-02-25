@@ -10,6 +10,17 @@
                     <p><strong>Species:</strong> {{ animal.species }}</p>
                     <p><strong>Habitat:</strong> {{ animal.habitat }}</p>
                     <p><strong>Dieta:</strong> {{ animal.dieta }}</p>
+                    <!-- <p>Numero Visitas {{ visitas.length }}</p> -->
+                    <p>Puntuacion: {{ animal.puntuacion }}</p>
+                    <label for="puntuacion">Como puntua a este animal?</label>
+                    <select id="puntuacion" v-model="animal.puntuacion">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button @click="submitPuntuacion">Submit</button>
                 </div>
             </div>
         </div>
@@ -32,7 +43,66 @@ const props = defineProps(["animalid"]);
 const getImageUrl = (image) => {
     return new URL(`../img/${image}`, import.meta.url).href;
 };
+const getUser = () => {
+    return JSON.parse(localStorage.getItem('user'));
+};
+const submitPuntuacion = async () => {
+    try {
+        const payload = {
+            puntuacion: animal.value.puntuacion
+        };
+        const response = await fetch(`http://localhost:3000/api/animals/${props.animalid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+            console.log('Puntuacion actualizada exitosamente');
+        } else {
+            console.error('Error al actualizar la puntuacion');
+        }
+    } catch (error) {
+        console.error('Error al actualizar la puntuacion:', error);
+    }
+};
 
+// const submitNewVisita = async () => {
+//     try {
+//         const payload = {
+//             id_usuario_sql: getUser().id,
+//             id_referencia_sql: props.animalid
+
+//         };
+//         const response = await fetch('http://localhost:3000/api/visitas', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(payload)
+//         });
+//         if (response.ok) {
+//             console.log('Visita creada exitosamente');
+//         } else {
+//             console.error('Error al crear la visita');
+//         }
+//     } catch (error) {
+//         console.error('Error al crear la visita:', error);
+//     }
+// };
+// const visitas = ref([]);
+// const fetchVisitas = async () => {
+//     try {
+//         const response = await fetch('http://localhost:3000/api/visitas');
+//         const data = await response.json();
+//         visitas = data;
+//         return data;
+//     } catch (error) {
+//         console.error('Error al obtener las visitas:', error);
+//         return [];
+//     }
+// };
 async function fetchAnimal() {
     try {
         const response = await api.get(`/animals/${props.animalid}`);
@@ -47,6 +117,8 @@ async function fetchAnimal() {
 
 onMounted(async () => {
     await fetchAnimal();
+    await fetchVisitas();
+    submitNewVisita();
 });
 </script>
 

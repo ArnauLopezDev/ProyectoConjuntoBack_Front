@@ -1,5 +1,15 @@
 const animalModel = require('../models/animals.model.js');
-
+exports.puntuarAnimal = async (req, res) => {
+    try {
+        const success = await animalModel.puntuarAnimal(parseInt(req.params.id), req.body.puntuacion);
+        if (!success) {
+            return res.status(404).json({ message: 'Animal no encontrado' });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error al puntuar el animal', error });
+    }
+};
 exports.getAnimals = async (req, res) => {
     try {
         const animals = await animalModel.getAllAnimals();

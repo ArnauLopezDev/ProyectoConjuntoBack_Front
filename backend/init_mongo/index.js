@@ -51,6 +51,14 @@
 
 db = db.getSiblingDB('zoologico');
 db.createCollection('comentarios');
+db.createCollection('accesos');
+db.accesos.insertOne([
+    {
+        id_usuario_sql: 2,
+        id_referencia_sql: 1,
+        visitas: 0
+    },
+]);
 db.comentarios.insertMany([
     {
         id_usuario_sql: 2,

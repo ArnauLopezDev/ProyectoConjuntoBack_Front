@@ -75,7 +75,7 @@ const submitNewComment = async () => {
             id_referencia_sql: props.zoologicoid,
             tipo_referencia: 'zoologico',
             contenido: newCommentText.value,
-            user: localStorage.getItem("commentUser") || "Usuario_" + Math.floor(Math.random() * 1000)
+            user: localStorage.getItem("commentUser")
         };
 
         const response = await api.post('/comentarios', payload);

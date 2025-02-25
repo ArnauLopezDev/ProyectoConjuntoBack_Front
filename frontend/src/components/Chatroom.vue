@@ -2,82 +2,149 @@
     <div class="chat-room">
         <h2>{{ roomName }}</h2>
         <div class="messages" ref="messages">
-            <div v-for="(message, index) in messages" :key="index" class="message">
-                <strong>{{ message.user }}:</strong> {{ message.text }}
+            <div class="message-input-container">
+                <input type="file" accept="audio/*" @change="handleAudioUpload" ref="audioInput"
+                    style="display: none;" />
+                <button @click="$refs.audioInput.click()" class="audio-button">
+                    🎤
+                </button>
+                <div v-for="(message, index) in messages" :key="index" class="message">
+                    <strong>{{ message.user }}:</strong>
+                    <span v-if="message.url">
+                        <a>localhost:3000/{{ message.url }}</a>
+                    </span>
+                    <span v-else>{{ message.text }}</span>
+                </div>
             </div>
+            <div class="typing-indicator" v-if="typingUser">
+                <em>{{ typingUser }} está escribiendo...</em>
+            </div>
+            <input v-model="message" type="text" placeholder="Escribe un mensaje..." @keyup.enter="sendMessage"
+                @input="onTyping" />
         </div>
-        <input v-model="message" type="text" placeholder="Escribe un mensaje..." @keyup.enter="sendMessage" />
     </div>
 </template>
 
 <script>
-import socket from "@/services/socket";
-
+import socket, { send } from "@/services/socket";
+import api from '../services/api';
 export default {
-    data() {
-        return {
-            message: "",
-            messages: [],
-            user:
-                localStorage.getItem("chatUser") ||
-                "Usuario_" + Math.floor(Math.random() * 1000),
-            roomName: "",
-        };
-    },
     mounted() {
-        // Save the user in localStorage
         localStorage.setItem("chatUser", this.user);
 
-        // Obtain the unique room identifier.
-        // E.g., if the route is /animales/123, use the ID to create a unique room.
         const animalId = this.$route.params.animalid;
-        console.log("Valor de animalId:", animalId);
-        if (animalId) {
-            this.roomName = `animal-${animalId}`;
-        } else {
-            // If no ID, use the route name or a default value.
-            this.roomName = this.$route.name || "General";
-        }
-        console.log("Sala de chat asignada:", this.roomName);
+        this.roomName = animalId ? `animal-${animalId}` : this.$route.name || "General";
 
-        // Listen for incoming messages and filter them by room.
-        socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.room === this.roomName) {
-                this.messages.push(data);
+        this.messageHandler = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if ((data.type === "message" || data.type === "audio") && data.room === this.roomName) {
+                    this.messages.push(data);
+                }
+                if (data.type === "typing" && data.room === this.roomName && data.user !== this.user) {
+                    this.showTypingIndicator(data.user);
+                }
+            } catch (error) {
+                console.error("Error procesando mensaje:", error.message);
             }
         };
 
-        // Handle WebSocket errors.
-        socket.onerror = (error) => {
-            console.error("Error en el WebSocket:", error);
-            this.messages.push({
-                user: "Sistema",
-                text: "Error en la conexión con el servidor.",
-            });
-        };
 
-        // **No join message is sent here as Socket.js already handles it.**
+        socket.addEventListener('message', this.messageHandler);
     },
+    beforeUnmount() { // Ciclo de vida Vue 3
+        socket.removeEventListener('message', this.messageHandler);
+    },
+
     methods: {
+        async handleAudioUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const formData = new FormData();
+                formData.append('audio', file);
+                formData.append('room', this.roomName);
+                formData.append('user', this.user);
+
+                const response = await api.post('/upload-audio', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                send({
+                    type: "audio",
+                    user: this.user,
+                    room: this.roomName,
+                    url: response.data.url,
+                    duration: response.data.duration
+                });
+
+            } catch (error) {
+                console.error('Error subiendo audio:', error);
+                this.messages.push({
+                    user: "Sistema",
+                    text: "Error al subir el audio"
+                });
+            } finally {
+                event.target.value = ''; // Limpiar input
+            }
+        },
+        getAudioMimeType(url) {
+            const ext = url.split('.').pop().toLowerCase();
+            const types = {
+                mp3: 'audio/mpeg',
+                wav: 'audio/wav',
+                ogg: 'audio/ogg'
+            };
+            return types[ext] || 'audio/*';
+        },
         sendMessage() {
             if (this.message.trim() !== "") {
-                const data = {
-                    type: "message", // Helps the server distinguish message types.
+                send({
+                    type: "message",
                     user: this.user,
                     text: this.message,
                     room: this.roomName,
-                };
-
-                // Send message to the server.
-                socket.send(JSON.stringify(data));
+                });
                 this.message = "";
             }
+        },
+
+        onTyping() {
+            if (this.typingEmitTimeout) clearTimeout(this.typingEmitTimeout);
+            this.typingEmitTimeout = setTimeout(() => {
+                send({
+                    type: "typing",
+                    user: this.user,
+                    room: this.roomName,
+                });
+            }, 300);
+        },
+        showTypingIndicator(userName) {
+            this.typingUser = userName;
+            if (this.typingTimer) clearTimeout(this.typingTimer);
+            // Oculta el indicador después de 2 segundos sin nuevos eventos
+            this.typingTimer = setTimeout(() => {
+                this.typingUser = "";
+            }, 2000);
         },
         scrollToBottom() {
             const messagesDiv = this.$refs.messages;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         },
+    },
+    data() {
+        return {
+            message: "",
+            messages: [],
+            user: localStorage.getItem("chatUser"),
+            roomName: "",
+            typingUser: "",
+            typingTimer: null,
+            typingEmitTimeout: null,
+        };
     },
     watch: {
         messages() {
@@ -86,6 +153,7 @@ export default {
     },
 };
 </script>
+
 
 <style scoped>
 /* Container with a warm, sandy background and earthy borders */

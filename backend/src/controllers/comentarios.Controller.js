@@ -1,6 +1,8 @@
 // controllers/comentarios.Controller.js
 const { addComentario, getComentarios, deleteComentario } = require("../models/comentarios.model.js");
 
+
+
 // Crear un comentario
 exports.createComentario = async (req, res) => {
     const { id_usuario_sql, id_referencia_sql, tipo_referencia, contenido, respuestas } = req.body;

@@ -1,15 +1,16 @@
 <template>
   <header>
-    <RouterLink to="/">" <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    <RouterLink to="/">
+      <img alt="Zoo logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     </RouterLink>
 
     <div class="wrapper">
-      <HelloWorld msg="Welcome to Zoo Explorer" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/animales">Animales</RouterLink>
         <RouterLink to="/zoologicos">Zoológicos</RouterLink>
         <RouterLink to="/auth">Login/Registro</RouterLink>
+        <RouterLink v-if="isAdmin" to="/admin">Admin Panel</RouterLink>
       </nav>
     </div>
   </header>
@@ -18,6 +19,31 @@
     <RouterView />
   </main>
 </template>
+
+<script>
+import * as jwtDecode from "jwt-decode";
+
+export default {
+  name: "App",
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
+    isAdmin() {
+      const token = localStorage.getItem("token");
+      if (!token) return false;
+      try {
+        const decoded = jwtDecode.default(token);
+
+        return decoded.rol === "admin";
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        return false;
+      }
+    },
+  },
+};
+</script>
 
 <style scoped>
 :root {
@@ -40,11 +66,9 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s ease;
-
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-
 
 .logo {
   max-height: 80px;
@@ -84,8 +108,7 @@ nav::after {
   transform: translateY(-50%);
   height: 60%;
   width: 3px;
-  background: linear-gradient(to bottom,
-      transparent);
+  background: linear-gradient(to bottom, transparent);
 }
 
 nav a {
@@ -118,10 +141,8 @@ nav a.router-link-active {
   background-blend-mode: soft-light;
   margin: 0 auto;
   margin-top: 5rem;
-
 }
 
-/* Animal track border */
 header::after {
   content: '';
   position: absolute;
@@ -193,8 +214,6 @@ header::after {
   nav::after {
     display: none;
   }
-
-
 }
 
 @keyframes header-scroll {

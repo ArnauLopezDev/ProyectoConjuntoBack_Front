@@ -30,6 +30,8 @@ CREATE TABLE Animales (
     dieta VARCHAR(255) NOT NULL,
     estado_salud VARCHAR(255),
     id_zoologico INT NOT NULL,
+    puntuacion INT DEFAULT 0,
+    mostrar BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (id_zoologico) REFERENCES Zoologicos(id_zoologico)
         ON DELETE CASCADE ON UPDATE CASCADE
 );

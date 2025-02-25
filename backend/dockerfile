@@ -12,6 +12,9 @@ COPY src/package*.json /app/
 
 # Install dependencies inside the container
 RUN npm install --build-from-source bcrypt
+RUN npm install multer
+
+
 
 # Copy the rest of the application
 COPY . .

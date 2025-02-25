@@ -10,6 +10,8 @@ client.connect();
 const database = client.db("zoologico");
 const comentariosCollection = database.collection("comentarios");
 
+
+
 async function addComentario(comentario) {
     // Si no se envía la fecha, se asigna la fecha actual.
     if (!comentario.fecha_comentario) {
@@ -33,5 +35,5 @@ async function deleteComentario(idComentario) {
 module.exports = {
     addComentario,
     getComentarios,
-    deleteComentario
+    deleteComentario,
 };

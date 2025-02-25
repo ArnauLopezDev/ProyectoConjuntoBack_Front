@@ -15,7 +15,6 @@ const animalsController = require('../controllers/animals.Controller');
 // Rutas públicas
 router.get('/', animalsController.getAnimals);
 router.get('/:id', animalsController.getAnimalById);
-
 // Rutas protegidas por rol de administrador
 router.post('/', animalsController.createAnimal);
 router.put('/:id', animalsController.updateAnimal);

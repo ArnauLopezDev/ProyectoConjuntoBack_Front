@@ -26,15 +26,15 @@ const register = async (req, res) => {
             return res.status(400).json({ error: "Invalid password format" });
         }
 
-        console.log("Hashing password...");
-        const hashedPassword = await bcrypt.hash(contrasena, 12);
+        // console.log("Hashing password...");
+        // const hashedPassword = await bcrypt.hash(contrasena, 12);
         const userRole = rol || "visitante";
 
         console.log("Creating user in database...");
         const newUserId = await createUser({
             name,
             email,
-            contrasena: hashedPassword,
+            contrasena: contrasena,
             rol: userRole,
         });
 
@@ -59,9 +59,13 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
+        const isMatch = false;
+        if (user.contrasena == contrasena) {
+            isMatch = true;
+        }
 
         // Compare the provided password with the stored hashed password
-        const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+        // const isMatch = await bcrypt.compare(contrasena, user.contrasena);
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }

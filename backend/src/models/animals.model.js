@@ -49,6 +49,18 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     queueLimit: 0,
 });
+exports.puntuarAnimal = async (id, puntuacion) => {
+    try {
+        const [result] = await pool.query(
+            "UPDATE Animales SET puntuacion = ? WHERE id_animal = ?",
+            [puntuacion, id]
+        );
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error("Error puntuando animal:", error);
+        throw error;
+    }
+};
 // Fetch all animals
 exports.getAllAnimals = async () => {
     try {
@@ -106,6 +118,19 @@ exports.deleteAnimal = async (id) => {
         return result.affectedRows > 0;
     } catch (error) {
         console.error("Error deleting animal:", error);
+        throw error;
+    }
+};
+// Función para actualizar la visibilidad (mostrar/no mostrar)
+exports.updateAnimalVisibility = async (id, mostrar) => {
+    try {
+        const [result] = await pool.query(
+            "UPDATE Animales SET mostrar = ? WHERE id_animal = ?",
+            [mostrar, id]
+        );
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error("Error actualizando visibilidad del animal:", error);
         throw error;
     }
 };
